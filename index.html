@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gana dinero completando encuestas online. Pagos rápidos por PayPal y Amazon. Únete a más de 12,000 usuarios que ya están ganando.">
+    <meta name="keywords" content="ganar dinero, encuestas pagadas, dinero online, PayPal, Amazon gift cards">
+    <meta name="author" content="Encuestas Rápidas">
+
+    <!-- Open Graph para redes sociales -->
+    <meta property="og:title" content="Gana Dinero Hoy | Encuestas Confirmadas">
+    <meta property="og:description" content="Completa encuestas y gana dinero. Pagos desde $5. Más de $45,000 pagados este mes.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tu-usuario.github.io/tu-repo">
+    <meta property="og:image" content="https://tu-usuario.github.io/tu-repo/og-image.jpg">
+
+    <title>Gana Dinero Hoy | Encuestas Confirmadas</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Estilos adicionales para notificaciones -->
+    <style>
+        .activity-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transform: translateX(-400px);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .activity-notification.show {
+            transform: translateX(0);
+        }
+
+        .activity-notification i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .activity-notification strong {
+            color: var(--dark-color);
+        }
+
+        .activity-notification small {
+            color: #95a5a6;
+        }
+
+        @media (max-width: 768px) {
+            .activity-notification {
+                left: 10px;
+                right: 10px;
+                max-width: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Banner de Urgencia -->
+<div class="urgency-banner">
+    <i class="fas fa-fire"></i>
+    ¡OFERTA ESPECIAL! Bono de $5 para nuevos usuarios que completen su primera encuesta hoy
+    <i class="fas fa-fire"></i>
+</div>
+
+<header>
+    <h1>💰 Gana Dinero en 24 Horas</h1>
+    <p>Selecciona una opción y empieza a sumar dólares</p>
+</header>
+
+<!-- Sección de Estadísticas -->
+<div class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <i class="fas fa-users stat-icon"></i>
+            <span class="stat-number">12,543</span>
+            <span class="stat-label">Usuarios Activos</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-dollar-sign stat-icon"></i>
+            <span class="stat-number">$45,231</span>
+            <span class="stat-label">Pagado Este Mes</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-chart-line stat-icon"></i>
+            <span class="stat-number">98.5%</span>
+            <span class="stat-label">Satisfacción</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Opción 1: Enlace directo de Afiliado -->
+    <div class="card">
+        <span class="badge"><i class="fas fa-star"></i> RECOMENDADO</span>
+        <i class="fas fa-gift card-icon"></i>
+        <h2>Encuesta Rápida Amazon/PayPal</h2>
+        <p>Gana entre $0.50 y $2.00 por responder preguntas simples. Pago mínimo bajo.</p>
+
+        <div class="earning-info">
+            <div class="earning-detail">
+                <strong>$0.50 - $2.00</strong>
+                <span>Por encuesta</span>
+            </div>
+            <div class="earning-detail">
+                <strong>5-10 min</strong>
+                <span>Tiempo estimado</span>
+            </div>
+        </div>
+
+        <!-- TODO: REEMPLAZA EL '#' CON TU LINK DE AFILIADO -->
+        <a href="#" target="_blank" class="btn" onclick="trackSurveyClick('Encuesta Rápida Amazon/PayPal')">
+            ¡EMPEZAR ENCUESTA AHORA! <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <!-- Opción 2: Espacio para el Offerwall -->
+    <div class="card">
+        <i class="fas fa-tasks card-icon"></i>
+        <h2>Muro de Ofertas</h2>
+        <p>Completa múltiples tareas y encuestas en un solo lugar.</p>
+
+        <div class="earning-info">
+            <div class="earning-detail">
+                <strong>$1.00 - $5.00</strong>
+                <span>Por tarea</span>
+            </div>
+            <div class="earning-detail">
+                <strong>10-20 min</strong>
+                <span>Tiempo estimado</span>
+            </div>
+        </div>
+
+        <!-- TODO: Aquí pegarás el script de CPX Research, Pollfish o BitLabs -->
+        <div class="offerwall-area">
+            <i class="fas fa-clipboard-list" style="font-size: 3rem; color: #bdc3c7; margin-bottom: 15px;"></i>
+            <div>
+                <strong>[AQUÍ APARECERÁN TUS ENCUESTAS AUTOMÁTICAS]</strong>
+                <br><small>(Configura tu Offerwall y pega el código aquí)</small>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Sección Cómo Funciona -->
+<div class="how-it-works">
+    <h2><i class="fas fa-question-circle"></i> ¿Cómo Funciona?</h2>
+    <div class="steps-grid">
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>Regístrate Gratis</h3>
+            <p>Haz clic en cualquier encuesta y completa un registro rápido. No requiere tarjeta de crédito.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Completa Encuestas</h3>
+            <p>Responde preguntas simples sobre productos, servicios y tu opinión. Toma solo minutos.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Recibe tu Pago</h3>
+            <p>Retira tu dinero por PayPal, Amazon o transferencia bancaria. Pago mínimo desde $5.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <h3>Gana Más</h3>
+            <p>Invita amigos y gana comisiones adicionales. Mientras más participas, más ganas.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Métodos de Pago -->
+<div class="container">
+    <div class="payment-methods">
+        <h3><i class="fas fa-credit-card"></i> Métodos de Pago Disponibles</h3>
+        <div class="payment-icons">
+            <div class="payment-icon">
+                <i class="fab fa-paypal" style="color: #00457C;"></i> PayPal
+            </div>
+            <div class="payment-icon">
+                <i class="fab fa-amazon" style="color: #FF9900;"></i> Amazon
+            </div>
+            <div class="payment-icon">
+                <i class="fas fa-university" style="color: #2ecc71;"></i> Banco
+            </div>
+            <div class="payment-icon">
+                <i class="fas fa-gift" style="color: #e74c3c;"></i> Gift Cards
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección de Testimonios -->
+<div class="testimonials-section">
+    <h2><i class="fas fa-comments"></i> Lo Que Dicen Nuestros Usuarios</h2>
+    <div class="testimonials-grid">
+        <div class="testimonial-card">
+            <div class="testimonial-header">
+                <div class="avatar">MR</div>
+                <div class="testimonial-info">
+                    <h4>María Rodríguez</h4>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <p class="testimonial-text">
+                "En solo 2 semanas he ganado $127. Las encuestas son fáciles y los pagos llegan rápido a PayPal."
+            </p>
+            <span class="testimonial-amount"><i class="fas fa-check-circle"></i> Ganó $127 en 14 días</span>
+        </div>
+
+        <div class="testimonial-card">
+            <div class="testimonial-header">
+                <div class="avatar">JL</div>
+                <div class="testimonial-info">
+                    <h4>Juan López</h4>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <p class="testimonial-text">
+                "Perfecto para ganar dinero extra en mi tiempo libre. Ya he cobrado 3 veces sin problemas."
+            </p>
+            <span class="testimonial-amount"><i class="fas fa-check-circle"></i> Ganó $89 en 10 días</span>
+        </div>
+
+        <div class="testimonial-card">
+            <div class="testimonial-header">
+                <div class="avatar">AC</div>
+                <div class="testimonial-info">
+                    <h4>Ana Castro</h4>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <p class="testimonial-text">
+                "Lo mejor es que puedo hacerlo desde mi celular. Muy recomendado para estudiantes."
+            </p>
+            <span class="testimonial-amount"><i class="fas fa-check-circle"></i> Ganó $156 en 21 días</span>
+        </div>
+    </div>
+</div>
+
+<!-- Sección FAQ -->
+<div class="faq-section">
+    <h2><i class="fas fa-question-circle"></i> Preguntas Frecuentes</h2>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            ¿Es realmente gratis?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            Sí, es 100% gratis. No necesitas pagar nada para registrarte ni para completar encuestas. Nunca te pediremos información de tarjeta de crédito.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            ¿Cuánto puedo ganar?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            Depende del tiempo que dediques. En promedio, nuestros usuarios ganan entre $50 y $200 al mes. Algunos usuarios dedicados ganan más de $500 mensuales.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            ¿Cuándo recibo mi pago?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            Los pagos se procesan entre 24-48 horas después de solicitar el retiro. El pago mínimo es de $5 para PayPal y $10 para otros métodos.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            ¿Desde qué países puedo participar?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            Aceptamos usuarios de la mayoría de países de Latinoamérica, España y Estados Unidos. La disponibilidad de encuestas puede variar según tu ubicación.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            ¿Necesito experiencia previa?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            No, no necesitas ninguna experiencia. Las encuestas son simples preguntas de opción múltiple sobre productos, servicios y tu opinión personal.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            ¿Puedo usar mi celular?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            Sí, nuestro sitio está optimizado para dispositivos móviles. Puedes completar encuestas desde tu teléfono, tablet o computadora.
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p><strong>© 2024 Guía de Encuestas Rápidas</strong></p>
+    <p>Todos los derechos reservados | Gana dinero de forma segura y confiable</p>
+    <div class="footer-links">
+        <a href="politica-privacidad.html">Política de Privacidad</a> |
+        <a href="#terminos">Términos y Condiciones</a> |
+        <a href="mailto:contacto@tudominio.com">Contacto</a>
+    </div>
+    <p style="margin-top: 15px;">
+        <i class="fas fa-shield-alt"></i> Pagos seguros |
+        <i class="fas fa-lock"></i> Datos protegidos |
+        <i class="fas fa-headset"></i> Soporte 24/7
+    </p>
+</footer>
+
+<!-- JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>
