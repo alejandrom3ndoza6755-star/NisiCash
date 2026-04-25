@@ -7,6 +7,15 @@ const CPX_CONFIG = {
     secureHashKey: 'CNyYOocHuRrNRRqsUueyBCOQ9ZtzaHFN' // Tu secure hash de CPX Research
 };
 
+// ============================================
+// CONFIGURACIÓN DE THEOREM REACH
+// ============================================
+
+const THEOREM_CONFIG = {
+    apiKey: '5b4aa87c9129005b37e8d57917a4',
+    appId: '24903'
+};
+
 // Generar o recuperar ID único de usuario
 function getUserId() {
     let userId = localStorage.getItem('cpx_user_id');
@@ -60,6 +69,32 @@ async function initCPXResearch() {
         trackEvent('cpx_offerwall_loaded', {
             user_id: userId,
             language: userLang
+        });
+    }
+}
+
+// ============================================
+// INICIALIZAR THEOREM REACH
+// ============================================
+
+// Inicializar Theorem Reach Offerwall
+function initTheoremReach() {
+    const userId = getUserId();
+    
+    // Construir URL del iframe de Theorem Reach
+    const theoremUrl = new URL('https://theoremreach.com/respondent_entry/direct');
+    theoremUrl.searchParams.set('api_key', THEOREM_CONFIG.apiKey);
+    theoremUrl.searchParams.set('user_id', userId);
+    
+    // Establecer URL del iframe
+    const iframe = document.getElementById('theorem-iframe');
+    if (iframe) {
+        iframe.src = theoremUrl.toString();
+        console.log('Theorem Reach inicializado para usuario:', userId);
+        
+        // Tracking
+        trackEvent('theorem_offerwall_loaded', {
+            user_id: userId
         });
     }
 }
@@ -314,6 +349,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializar CPX Research
     initCPXResearch();
+
+    // Inicializar Theorem Reach
+    initTheoremReach();
 
     // Inicializar tracking
     initializeTracking();
