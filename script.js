@@ -43,15 +43,23 @@ async function initCPXResearch() {
     cpxUrl.searchParams.set('subid_1', 'web');
     cpxUrl.searchParams.set('subid_2', window.location.hostname);
     
+    // Agregar parámetros adicionales para mejor targeting
+    // Detectar idioma del navegador
+    const userLang = navigator.language || navigator.userLanguage;
+    cpxUrl.searchParams.set('language', userLang);
+    
     // Establecer URL del iframe
     const iframe = document.getElementById('cpx-iframe');
     if (iframe) {
         iframe.src = cpxUrl.toString();
         console.log('CPX Research inicializado para usuario:', userId);
+        console.log('Idioma detectado:', userLang);
+        console.log('URL completa:', cpxUrl.toString());
         
         // Tracking
         trackEvent('cpx_offerwall_loaded', {
-            user_id: userId
+            user_id: userId,
+            language: userLang
         });
     }
 }
