@@ -1,0 +1,13 @@
+{
+  "name": "nisicash-backend",
+  "version": "1.0.0",
+  "description": "Backend serverless para NisiCash - Manejo de postbacks de CPX Research",
+  "main": "api/cpx-postback.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["cpx-research", "postback", "serverless", "vercel"],
+  "author": "alejandrom3ndoza6755",
+  "license": "MIT"
+}
