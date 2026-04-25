@@ -1,4 +1,62 @@
 // ============================================
+// CONFIGURACIÓN DE CPX RESEARCH
+// ============================================
+
+const CPX_CONFIG = {
+    appId: '32674',
+    secureHashKey: 'CNyYOocHuRrNRRqsUueyBCOQ9ZtzaHFN' // Tu secure hash de CPX Research
+};
+
+// Generar o recuperar ID único de usuario
+function getUserId() {
+    let userId = localStorage.getItem('cpx_user_id');
+    if (!userId) {
+        // Generar ID único basado en timestamp y random
+        userId = 'USER_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('cpx_user_id', userId);
+    }
+    return userId;
+}
+
+// Generar secure hash (MD5 simplificado para cliente)
+// NOTA: En producción, esto debería hacerse en el servidor
+async function generateSecureHash(userId) {
+    const text = userId + '-' + CPX_CONFIG.secureHashKey;
+    const msgBuffer = new TextEncoder().encode(text);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+// Inicializar CPX Research Offerwall
+async function initCPXResearch() {
+    const userId = getUserId();
+    const secureHash = await generateSecureHash(userId);
+    
+    // Construir URL del iframe
+    const cpxUrl = new URL('https://offers.cpx-research.com/index.php');
+    cpxUrl.searchParams.set('app_id', CPX_CONFIG.appId);
+    cpxUrl.searchParams.set('ext_user_id', userId);
+    cpxUrl.searchParams.set('secure_hash', secureHash);
+    cpxUrl.searchParams.set('username', 'Usuario_' + userId.substr(-6));
+    cpxUrl.searchParams.set('subid_1', 'web');
+    cpxUrl.searchParams.set('subid_2', window.location.hostname);
+    
+    // Establecer URL del iframe
+    const iframe = document.getElementById('cpx-iframe');
+    if (iframe) {
+        iframe.src = cpxUrl.toString();
+        console.log('CPX Research inicializado para usuario:', userId);
+        
+        // Tracking
+        trackEvent('cpx_offerwall_loaded', {
+            user_id: userId
+        });
+    }
+}
+
+// ============================================
 // CONFIGURACIÓN DE TRACKING
 // ============================================
 
@@ -245,6 +303,9 @@ function initAffiliateTracking() {
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Sitio web cargado correctamente');
+
+    // Inicializar CPX Research
+    initCPXResearch();
 
     // Inicializar tracking
     initializeTracking();
