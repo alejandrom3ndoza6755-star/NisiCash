@@ -279,51 +279,10 @@ function initSmoothScroll() {
 }
 
 // ============================================
-// NOTIFICACIONES DE ACTIVIDAD (Prueba Social)
+// NOTIFICACIONES DE ACTIVIDAD - DESACTIVADAS
 // ============================================
-
-const notifications = [
-    { name: 'Carlos M.', amount: '$12.50', time: '2 minutos' },
-    { name: 'Laura P.', amount: '$8.75', time: '5 minutos' },
-    { name: 'Miguel R.', amount: '$15.00', time: '8 minutos' },
-    { name: 'Sofia L.', amount: '$6.25', time: '12 minutos' },
-    { name: 'Diego F.', amount: '$20.00', time: '15 minutos' }
-];
-
-function showNotification() {
-    const notification = notifications[Math.floor(Math.random() * notifications.length)];
-
-    const notifElement = document.createElement('div');
-    notifElement.className = 'activity-notification';
-    notifElement.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <div>
-            <strong>${notification.name}</strong> acaba de ganar <strong>${notification.amount}</strong>
-            <br><small>Hace ${notification.time}</small>
-        </div>
-    `;
-
-    document.body.appendChild(notifElement);
-
-    // Mostrar notificación
-    setTimeout(() => {
-        notifElement.classList.add('show');
-    }, 100);
-
-    // Ocultar después de 5 segundos
-    setTimeout(() => {
-        notifElement.classList.remove('show');
-        setTimeout(() => {
-            notifElement.remove();
-        }, 300);
-    }, 5000);
-}
-
-// Mostrar notificación cada 15 segundos
-setInterval(showNotification, 15000);
-
-// Mostrar primera notificación después de 5 segundos
-setTimeout(showNotification, 5000);
+// Las notificaciones falsas pueden dañar la credibilidad del sitio.
+// Si deseas mostrar actividad real, considera integrar datos reales de las APIs.
 
 // ============================================
 // RASTREO DE CLICS EN ENLACES DE AFILIADO
