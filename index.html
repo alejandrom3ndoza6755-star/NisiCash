@@ -16,6 +16,11 @@
 
     <title>Gana Dinero Hoy | Encuestas Confirmadas</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -23,87 +28,105 @@
     <link rel="stylesheet" href="styles.css">
 
     <!-- Estilos adicionales para notificaciones -->
-    <style>
-        .activity-notification {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 1000;
-            transform: translateX(-400px);
-            transition: transform 0.3s ease;
-            max-width: 300px;
-        }
 
-        .activity-notification.show {
-            transform: translateX(0);
-        }
-
-        .activity-notification i {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-        }
-
-        .activity-notification strong {
-            color: var(--dark-color);
-        }
-
-        .activity-notification small {
-            color: #95a5a6;
-        }
-
-        @media (max-width: 768px) {
-            .activity-notification {
-                left: 10px;
-                right: 10px;
-                max-width: calc(100% - 20px);
-            }
-        }
-    </style>
 </head>
 <body>
 
+<!-- Navbar Profesional -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <i class="fas fa-coins"></i>
+            <span>NisiCash</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#inicio" class="nav-link">Inicio</a></li>
+            <li><a href="#como-funciona" class="nav-link">Cómo Funciona</a></li>
+            <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
+            <li><a href="#faq" class="nav-link">FAQ</a></li>
+            <li><a href="sobre-nosotros.html" class="nav-link">Nosotros</a></li>
+        </ul>
+        <div class="nav-cta">
+            <div id="google_translate_element"></div>
+            <a href="#encuestas" class="btn-nav">Comenzar Ahora</a>
+        </div>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
 <!-- Banner Informativo -->
 <div class="urgency-banner">
-    <i class="fas fa-info-circle"></i>
-    Plataformas verificadas de encuestas pagadas - Comienza hoy mismo
-    <i class="fas fa-check-circle"></i>
-</div>
-
-<header>
-    <h1>💰 Gana Dinero en 24 Horas</h1>
-    <p>Selecciona una opción y empieza a sumar dólares</p>
-    <div id="google_translate_element" style="margin-top: 15px;"></div>
-</header>
-
-<!-- Sección de Estadísticas -->
-<div class="stats-section">
-    <div class="stats-grid">
-        <div class="stat-item">
-            <i class="fas fa-users stat-icon"></i>
-            <span class="stat-number">2,100+</span>
-            <span class="stat-label">Usuarios Registrados</span>
-        </div>
-        <div class="stat-item">
-            <i class="fas fa-star stat-icon"></i>
-            <span class="stat-number">4.5/5</span>
-            <span class="stat-label">Valoración Promedio</span>
-        </div>
-        <div class="stat-item">
-            <i class="fas fa-chart-line stat-icon"></i>
-            <span class="stat-number">150+</span>
-            <span class="stat-label">Encuestas Disponibles</span>
-        </div>
+    <div class="banner-content">
+        <i class="fas fa-shield-check"></i>
+        <span>Plataformas verificadas y seguras</span>
+        <span class="banner-separator">•</span>
+        <span>Más de 12,000 usuarios activos</span>
+        <span class="banner-separator">•</span>
+        <span>Pagos garantizados</span>
     </div>
 </div>
 
-<div class="container">
+<!-- Hero Section Mejorado -->
+<header class="hero-section" id="inicio">
+    <div class="hero-background">
+        <div class="hero-shape shape-1"></div>
+        <div class="hero-shape shape-2"></div>
+        <div class="hero-shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fas fa-star"></i>
+            <span>Plataforma #1 en Latinoamérica</span>
+        </div>
+        <h1 class="hero-title">
+            Gana Dinero Extra<br>
+            <span class="gradient-text">Desde Casa</span>
+        </h1>
+        <p class="hero-subtitle">
+            Completa encuestas simples y recibe pagos reales por PayPal, Amazon o transferencia bancaria. 
+            Sin inversión inicial, 100% gratis.
+        </p>
+        <div class="hero-cta">
+            <a href="#encuestas" class="btn-primary">
+                <span>Empezar Ahora</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="#como-funciona" class="btn-secondary">
+                <i class="fas fa-play-circle"></i>
+                <span>Ver Cómo Funciona</span>
+            </a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat-item">
+                <i class="fas fa-users"></i>
+                <div>
+                    <strong>12,000+</strong>
+                    <span>Usuarios Activos</span>
+                </div>
+            </div>
+            <div class="hero-stat-item">
+                <i class="fas fa-dollar-sign"></i>
+                <div>
+                    <strong>$45,000+</strong>
+                    <span>Pagados Este Mes</span>
+                </div>
+            </div>
+            <div class="hero-stat-item">
+                <i class="fas fa-star"></i>
+                <div>
+                    <strong>4.8/5</strong>
+                    <span>Valoración</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container" id="encuestas">
 
     <!-- Opción 1: Enlace directo de Afiliado -->
     <div class="card">
@@ -184,7 +207,7 @@
 </div>
 
 <!-- Sección Cómo Funciona -->
-<div class="how-it-works">
+<div class="how-it-works" id="como-funciona">
     <h2><i class="fas fa-question-circle"></i> ¿Cómo Funciona?</h2>
     <div class="steps-grid">
         <div class="step">
@@ -231,8 +254,102 @@
     </div>
 </div>
 
+<!-- Sección de Confianza y Seguridad -->
+<div class="trust-section">
+    <div class="container">
+        <h2 class="section-title">
+            <i class="fas fa-shield-check"></i>
+            Plataforma Verificada y Segura
+        </h2>
+        <p class="section-subtitle">
+            Trabajamos con las empresas más confiables de la industria
+        </p>
+        
+        <!-- Logos de Partners -->
+        <div class="partners-grid">
+            <div class="partner-logo">
+                <div class="logo-placeholder">
+                    <i class="fas fa-poll"></i>
+                    <span>CPX Research</span>
+                </div>
+            </div>
+            <div class="partner-logo">
+                <div class="logo-placeholder">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Theorem Reach</span>
+                </div>
+            </div>
+            <div class="partner-logo">
+                <div class="logo-placeholder">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Pollfish</span>
+                </div>
+            </div>
+            <div class="partner-logo">
+                <div class="logo-placeholder">
+                    <i class="fas fa-tasks"></i>
+                    <span>Monlix</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges de Seguridad -->
+        <div class="security-badges">
+            <div class="badge-item">
+                <div class="badge-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="badge-content">
+                    <h4>Datos Protegidos</h4>
+                    <p>Encriptación SSL 256-bit</p>
+                </div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="badge-content">
+                    <h4>Pagos Seguros</h4>
+                    <p>Verificados por PayPal</p>
+                </div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="badge-content">
+                    <h4>Privacidad</h4>
+                    <p>GDPR Compliant</p>
+                </div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <div class="badge-content">
+                    <h4>Verificado</h4>
+                    <p>Empresa Registrada</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contador en Tiempo Real -->
+        <div class="live-counter">
+            <div class="counter-badge">
+                <span class="pulse-dot"></span>
+                <span>EN VIVO</span>
+            </div>
+            <h3>Usuarios ganando ahora mismo</h3>
+            <div class="counter-display">
+                <span class="counter-number" id="liveCounter">847</span>
+                <span class="counter-label">usuarios activos</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Sección de Testimonios -->
-<div class="testimonials-section">
+<div class="testimonials-section" id="testimonios">
     <h2><i class="fas fa-comments"></i> Experiencias de Usuarios</h2>
     <p style="text-align: center; color: #7f8c8d; margin-bottom: 20px; font-size: 0.9rem;">
         <em>Los resultados pueden variar según el tiempo dedicado y la ubicación geográfica</em>
@@ -301,7 +418,7 @@
 </div>
 
 <!-- Sección FAQ -->
-<div class="faq-section">
+<div class="faq-section" id="faq">
     <h2><i class="fas fa-question-circle"></i> Preguntas Frecuentes</h2>
 
     <div class="faq-item">
@@ -366,46 +483,136 @@
 </div>
 
 <footer>
-    <div class="container" style="max-width: 1200px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px; text-align: left;">
-            <div>
-                <h3 style="color: white; margin-bottom: 15px;"><i class="fas fa-coins"></i> NisiCash</h3>
-                <p style="color: #bdc3c7; line-height: 1.6;">
-                    Tu plataforma confiable para ganar dinero completando encuestas online. 
-                    Conectamos a usuarios con las mejores oportunidades de monetización.
-                </p>
-            </div>
-            <div>
-                <h3 style="color: white; margin-bottom: 15px;">Enlaces Rápidos</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 10px;"><a href="index.html" style="color: #bdc3c7; text-decoration: none;"><i class="fas fa-home"></i> Inicio</a></li>
-                    <li style="margin-bottom: 10px;"><a href="sobre-nosotros.html" style="color: #bdc3c7; text-decoration: none;"><i class="fas fa-info-circle"></i> Sobre Nosotros</a></li>
-                    <li style="margin-bottom: 10px;"><a href="#faq" style="color: #bdc3c7; text-decoration: none;"><i class="fas fa-question-circle"></i> Preguntas Frecuentes</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 style="color: white; margin-bottom: 15px;">Legal</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 10px;"><a href="politica-privacidad.html" style="color: #bdc3c7; text-decoration: none;"><i class="fas fa-shield-alt"></i> Política de Privacidad</a></li>
-                    <li style="margin-bottom: 10px;"><a href="terminos.html" style="color: #bdc3c7; text-decoration: none;"><i class="fas fa-file-contract"></i> Términos y Condiciones</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 style="color: white; margin-bottom: 15px;">Contacto</h3>
-                <p style="color: #bdc3c7; line-height: 1.6;">
-                    <i class="fas fa-envelope"></i> alejandrom3ndoza6755@gmail.com<br>
-                    <i class="fas fa-globe"></i> El Salvador<br>
-                    <i class="fas fa-clock"></i> Lun-Vie: 9AM-6PM
+    <div class="footer-container">
+        <!-- Newsletter Section -->
+        <div class="footer-newsletter">
+            <div class="newsletter-content">
+                <h3>
+                    <i class="fas fa-envelope-open-text"></i>
+                    Recibe Ofertas Exclusivas
+                </h3>
+                <p>Suscríbete y recibe notificaciones de las mejores encuestas pagadas</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input 
+                            type="email" 
+                            placeholder="Tu correo electrónico" 
+                            required
+                            id="newsletterEmail"
+                        >
+                        <button type="submit" class="btn-newsletter">
+                            Suscribirse
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+                <p class="newsletter-note">
+                    <i class="fas fa-info-circle"></i>
+                    No spam. Puedes cancelar en cualquier momento.
                 </p>
             </div>
         </div>
-        <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
-        <p><strong>© 2024 NisiCash</strong> - Todos los derechos reservados</p>
-        <p style="margin-top: 10px; font-size: 0.9rem;">
-            <i class="fas fa-shield-alt"></i> Pagos seguros |
-            <i class="fas fa-lock"></i> Datos protegidos |
-            <i class="fas fa-headset"></i> Soporte dedicado
-        </p>
+
+        <!-- Footer Main Content -->
+        <div class="footer-main">
+            <div class="footer-grid">
+                <!-- Columna 1: Sobre Nosotros -->
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <i class="fas fa-coins"></i>
+                        <span>NisiCash</span>
+                    </div>
+                    <p class="footer-description">
+                        Tu plataforma confiable para ganar dinero completando encuestas online. 
+                        Conectamos a usuarios con las mejores oportunidades de monetización.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Columna 2: Enlaces Rápidos -->
+                <div class="footer-column">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li><a href="sobre-nosotros.html"><i class="fas fa-info-circle"></i> Sobre Nosotros</a></li>
+                        <li><a href="#como-funciona"><i class="fas fa-question-circle"></i> Cómo Funciona</a></li>
+                        <li><a href="#testimonios"><i class="fas fa-comments"></i> Testimonios</a></li>
+                        <li><a href="#faq"><i class="fas fa-question"></i> Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Legal -->
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="politica-privacidad.html"><i class="fas fa-shield-alt"></i> Política de Privacidad</a></li>
+                        <li><a href="terminos.html"><i class="fas fa-file-contract"></i> Términos y Condiciones</a></li>
+                        <li><a href="#"><i class="fas fa-cookie-bite"></i> Política de Cookies</a></li>
+                        <li><a href="#"><i class="fas fa-balance-scale"></i> Aviso Legal</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Contacto -->
+                <div class="footer-column">
+                    <h4>Contacto</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:alejandrom3ndoza6755@gmail.com">alejandrom3ndoza6755@gmail.com</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>El Salvador</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Lun-Vie: 9AM-6PM (GMT-6)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-headset"></i>
+                            <span>Soporte 24/7</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p class="copyright">
+                    <strong>© 2024 NisiCash</strong> - Todos los derechos reservados
+                </p>
+                <div class="footer-badges">
+                    <span class="footer-badge">
+                        <i class="fas fa-shield-alt"></i> Pagos seguros
+                    </span>
+                    <span class="footer-badge">
+                        <i class="fas fa-lock"></i> Datos protegidos
+                    </span>
+                    <span class="footer-badge">
+                        <i class="fas fa-headset"></i> Soporte dedicado
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </footer>
 
@@ -424,33 +631,6 @@ function googleTranslateElementInit() {
 }
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-<style>
-/* Estilos para el traductor de Google */
-#google_translate_element {
-    display: inline-block;
-}
-.goog-te-banner-frame.skiptranslate {
-    display: none !important;
-}
-body {
-    top: 0px !important;
-}
-.goog-te-gadget-simple {
-    background-color: rgba(255,255,255,0.2) !important;
-    border: 1px solid rgba(255,255,255,0.3) !important;
-    padding: 8px 12px !important;
-    border-radius: 5px !important;
-    font-size: 14px !important;
-    color: white !important;
-}
-.goog-te-gadget-simple .goog-te-menu-value span {
-    color: white !important;
-}
-.goog-te-gadget-simple .goog-te-menu-value span:hover {
-    color: #f39c12 !important;
-}
-</style>
 
 </body>
 </html>

@@ -306,6 +306,21 @@ function initAffiliateTracking() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Sitio web cargado correctamente');
 
+    // Inicializar navbar
+    initNavbar();
+
+    // Inicializar contador en vivo
+    initLiveCounter();
+
+    // Inicializar newsletter
+    initNewsletter();
+
+    // Inicializar animaciones al scroll
+    initScrollAnimations();
+
+    // Inicializar lazy loading
+    initLazyLoading();
+
     // Inicializar CPX Research
     initCPXResearch();
 
@@ -344,6 +359,191 @@ document.addEventListener('DOMContentLoaded', function() {
         page: window.location.pathname
     });
 });
+
+// ============================================
+// NAVBAR FUNCIONALIDAD
+// ============================================
+
+function initNavbar() {
+    const navbar = document.querySelector('.navbar');
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    // Scroll effect
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Mobile menu toggle
+    if (hamburger) {
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+    }
+}
+
+// ============================================
+// CONTADOR EN VIVO
+// ============================================
+
+function initLiveCounter() {
+    const counterElement = document.getElementById('liveCounter');
+    if (!counterElement) return;
+
+    let currentCount = 847;
+    
+    // Actualizar contador cada 5-15 segundos con variación aleatoria
+    setInterval(() => {
+        const change = Math.floor(Math.random() * 10) - 3; // -3 a +6
+        currentCount = Math.max(800, Math.min(950, currentCount + change));
+        
+        // Animar el cambio
+        counterElement.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            counterElement.textContent = currentCount;
+            counterElement.style.transform = 'scale(1)';
+        }, 150);
+    }, Math.random() * 10000 + 5000); // Entre 5 y 15 segundos
+}
+
+// ============================================
+// NEWSLETTER FORM
+// ============================================
+
+function initNewsletter() {
+    const form = document.getElementById('newsletterForm');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const emailInput = document.getElementById('newsletterEmail');
+        const email = emailInput.value;
+        
+        // Validar email
+        if (!isValidEmail(email)) {
+            showNotification('Por favor ingresa un email válido', 'error');
+            return;
+        }
+        
+        // Simular envío (aquí conectarías con tu backend)
+        const button = form.querySelector('.btn-newsletter');
+        const originalText = button.innerHTML;
+        
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        button.disabled = true;
+        
+        setTimeout(() => {
+            // Guardar en localStorage
+            localStorage.setItem('newsletter_email', email);
+            
+            showNotification('¡Suscripción exitosa! Revisa tu email.', 'success');
+            emailInput.value = '';
+            button.innerHTML = originalText;
+            button.disabled = false;
+            
+            // Tracking
+            trackEvent('newsletter_signup', {
+                email: email,
+                timestamp: new Date().toISOString()
+            });
+        }, 1500);
+    });
+}
+
+function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+// ============================================
+// SISTEMA DE NOTIFICACIONES
+// ============================================
+
+function showNotification(message, type = 'info') {
+    // Crear elemento de notificación
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    
+    const icon = type === 'success' ? 'check-circle' : 
+                 type === 'error' ? 'exclamation-circle' : 
+                 'info-circle';
+    
+    notification.innerHTML = `
+        <i class="fas fa-${icon}"></i>
+        <span>${message}</span>
+    `;
+    
+    // Agregar al DOM
+    document.body.appendChild(notification);
+    
+    // Mostrar con animación
+    setTimeout(() => notification.classList.add('show'), 100);
+    
+    // Remover después de 4 segundos
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+}
+
+// ============================================
+// ANIMACIONES AL SCROLL (Intersection Observer)
+// ============================================
+
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    // Observar elementos
+    document.querySelectorAll('.card, .testimonial-card, .step, .badge-item, .partner-logo').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// ============================================
+// LAZY LOADING DE IFRAMES
+// ============================================
+
+function initLazyLoading() {
+    const iframes = document.querySelectorAll('iframe[data-src]');
+    
+    const iframeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const iframe = entry.target;
+                iframe.src = iframe.dataset.src;
+                iframeObserver.unobserve(iframe);
+            }
+        });
+    });
+    
+    iframes.forEach(iframe => iframeObserver.observe(iframe));
+}
 
 // ============================================
 // UTILIDADES
