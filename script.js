@@ -403,20 +403,120 @@ function initLiveCounter() {
     const counterElement = document.getElementById('liveCounter');
     if (!counterElement) return;
 
-    let currentCount = 847;
+    // Generar número base aleatorio entre 800-950 en cada carga
+    const baseNumber = Math.floor(Math.random() * (950 - 800 + 1)) + 800;
+    
+    // Usar sessionStorage para mantener durante la sesión pero cambiar en nueva pestaña
+    let currentCount = sessionStorage.getItem('liveUserCount');
+    
+    if (!currentCount) {
+        currentCount = baseNumber;
+        sessionStorage.setItem('liveUserCount', currentCount);
+    } else {
+        currentCount = parseInt(currentCount);
+        // Pequeña variación si ya existe
+        currentCount = Math.max(800, Math.min(950, currentCount + Math.floor(Math.random() * 21) - 10));
+        sessionStorage.setItem('liveUserCount', currentCount);
+    }
+    
+    // Mostrar número inicial con animación
+    animateCounterValue(counterElement, 0, currentCount, 2000);
     
     // Actualizar contador cada 5-15 segundos con variación aleatoria
     setInterval(() => {
         const change = Math.floor(Math.random() * 10) - 3; // -3 a +6
-        currentCount = Math.max(800, Math.min(950, currentCount + change));
+        const newCount = Math.max(800, Math.min(950, currentCount + change));
         
-        // Animar el cambio
-        counterElement.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-            counterElement.textContent = currentCount;
-            counterElement.style.transform = 'scale(1)';
-        }, 150);
+        if (newCount !== currentCount) {
+            animateCounterValue(counterElement, currentCount, newCount, 800);
+            currentCount = newCount;
+            sessionStorage.setItem('liveUserCount', currentCount);
+        }
     }, Math.random() * 10000 + 5000); // Entre 5 y 15 segundos
+}
+
+// Función auxiliar para animar el contador
+function animateCounterValue(element, start, end, duration) {
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function para animación suave
+        const easeProgress = progress < 0.5 
+            ? 2 * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        
+        const current = Math.floor(start + (end - start) * easeProgress);
+        element.textContent = current;
+        
+        // Efecto de escala durante la animación
+        const scale = 1 + Math.sin(progress * Math.PI) * 0.05;
+        element.style.transform = `scale(${scale})`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.style.transform = 'scale(1)';
+        }
+    }
+    
+    requestAnimationFrame(update);
+}
+
+// ============================================
+// INFORMACIÓN DE MÉTODOS DE PAGO
+// ============================================
+
+function showPaymentInfo(method) {
+    const infoBox = document.getElementById('paymentInfo');
+    const infoText = document.getElementById('paymentInfoText');
+    
+    const paymentInfo = {
+        paypal: {
+            icon: 'fab fa-paypal',
+            color: '#00457C',
+            title: 'PayPal',
+            text: '<strong><i class="fab fa-paypal"></i> PayPal</strong><br>Retiro mínimo: $5-$25 USD (según plataforma)<br>Tiempo de procesamiento: 24-48 horas<br>Comisión: Gratis o 2-3%<br>Disponible en: 200+ países'
+        },
+        amazon: {
+            icon: 'fab fa-amazon',
+            color: '#FF9900',
+            title: 'Amazon',
+            text: '<strong><i class="fab fa-amazon"></i> Amazon Gift Cards</strong><br>Retiro mínimo: $5-$10 USD<br>Tiempo de procesamiento: Instantáneo a 24 horas<br>Comisión: Gratis<br>Disponible en: USA, UK, Canadá, México, España y más'
+        },
+        banco: {
+            icon: 'fas fa-university',
+            color: '#2ecc71',
+            title: 'Transferencia Bancaria',
+            text: '<strong><i class="fas fa-university"></i> Transferencia Bancaria</strong><br>Retiro mínimo: $50-$100 USD<br>Tiempo de procesamiento: 3-7 días hábiles<br>Comisión: Variable según país<br>Disponible en: La mayoría de países'
+        },
+        giftcards: {
+            icon: 'fas fa-gift',
+            color: '#e74c3c',
+            title: 'Gift Cards',
+            text: '<strong><i class="fas fa-gift"></i> Gift Cards</strong><br>Opciones: Google Play, iTunes, Steam, Xbox, PlayStation, etc.<br>Retiro mínimo: $5-$10 USD<br>Tiempo de procesamiento: Instantáneo a 24 horas<br>Comisión: Gratis'
+        }
+    };
+    
+    const info = paymentInfo[method];
+    if (info) {
+        infoText.innerHTML = info.text;
+        infoBox.style.display = 'block';
+        
+        // Scroll suave hacia la información
+        infoBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Efecto de aparición
+        infoBox.style.opacity = '0';
+        infoBox.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            infoBox.style.transition = 'all 0.3s ease';
+            infoBox.style.opacity = '1';
+            infoBox.style.transform = 'translateY(0)';
+        }, 10);
+    }
 }
 
 // ============================================

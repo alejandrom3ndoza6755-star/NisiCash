@@ -238,18 +238,21 @@
     <div class="payment-methods">
         <h3><i class="fas fa-credit-card"></i> Métodos de Pago Disponibles</h3>
         <div class="payment-icons">
-            <div class="payment-icon">
+            <div class="payment-icon" onclick="showPaymentInfo('paypal')" style="cursor: pointer;" title="Haz clic para más información">
                 <i class="fab fa-paypal" style="color: #00457C;"></i> PayPal
             </div>
-            <div class="payment-icon">
+            <div class="payment-icon" onclick="showPaymentInfo('amazon')" style="cursor: pointer;" title="Haz clic para más información">
                 <i class="fab fa-amazon" style="color: #FF9900;"></i> Amazon
             </div>
-            <div class="payment-icon">
+            <div class="payment-icon" onclick="showPaymentInfo('banco')" style="cursor: pointer;" title="Haz clic para más información">
                 <i class="fas fa-university" style="color: #2ecc71;"></i> Banco
             </div>
-            <div class="payment-icon">
+            <div class="payment-icon" onclick="showPaymentInfo('giftcards')" style="cursor: pointer;" title="Haz clic para más información">
                 <i class="fas fa-gift" style="color: #e74c3c;"></i> Gift Cards
             </div>
+        </div>
+        <div id="paymentInfo" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; display: none;">
+            <p id="paymentInfoText" style="margin: 0; color: #2c3e50;"></p>
         </div>
     </div>
 </div>
