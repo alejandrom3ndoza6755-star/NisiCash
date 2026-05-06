@@ -30,8 +30,9 @@ const POLLFISH_CONFIG = {
 // ============================================
 
 const WANNADS_CONFIG = {
-    publisherId: 'YOUR_WANNADS_PUBLISHER_ID', // TODO: Reemplazar con tu Publisher ID de Wannads
-    apiKey: 'YOUR_WANNADS_API_KEY' // TODO: Reemplazar con tu API Key
+    apiKey: '69fb8078c7980765005934',
+    secret: '8ce7087919',
+    apiSecret: '981a7c7380'
 };
 
 // Generar o recuperar ID único de usuario
@@ -204,44 +205,19 @@ function showPollfishMessage(message) {
 
 // Inicializar Wannads Offerwall
 function initWannads() {
-    // Verificar si las credenciales están configuradas
-    if (WANNADS_CONFIG.publisherId === 'YOUR_WANNADS_PUBLISHER_ID') {
-        console.warn('⚠️ Wannads no configurado. Por favor agrega tu Publisher ID.');
-        const container = document.getElementById('wannads-offerwall');
-        if (container) {
-            container.innerHTML = `
-                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; text-align: center; border: 2px dashed #ffc107;">
-                    <i class="fas fa-exclamation-triangle" style="color: #ffc107; font-size: 2rem; margin-bottom: 10px;"></i>
-                    <h3 style="color: #856404; margin: 10px 0;">Configuración Pendiente</h3>
-                    <p style="color: #856404; margin: 10px 0;">
-                        Para activar Wannads, necesitas:
-                    </p>
-                    <ol style="text-align: left; display: inline-block; color: #856404;">
-                        <li>Registrarte en <a href="https://wannads.com/publishers" target="_blank" style="color: #007bff;">Wannads Publishers</a></li>
-                        <li>Crear una aplicación/sitio web</li>
-                        <li>Obtener tu Publisher ID</li>
-                        <li>Configurar el postback URL: <code>https://nisi-cash.vercel.app/api/wannads-postback</code></li>
-                        <li>Agregar las credenciales en script.js</li>
-                    </ol>
-                </div>
-            `;
-        }
-        return;
-    }
-
     const userId = getUserId();
     
-    // Construir URL del iframe de Wannads
-    const wannadsUrl = new URL('https://wall.wannads.com/wall');
-    wannadsUrl.searchParams.set('pub_id', WANNADS_CONFIG.publisherId);
-    wannadsUrl.searchParams.set('user_id', userId);
-    wannadsUrl.searchParams.set('iframe', '1');
+    // Construir URL del iframe de Wannads (Surveywall)
+    const wannadsUrl = new URL('https://earn.wannads.com/surveywall');
+    wannadsUrl.searchParams.set('apiKey', WANNADS_CONFIG.apiKey);
+    wannadsUrl.searchParams.set('userId', userId);
     
     // Establecer URL del iframe
     const iframe = document.getElementById('wannads-iframe');
     if (iframe) {
         iframe.src = wannadsUrl.toString();
-        console.log('Wannads inicializado para usuario:', userId);
+        console.log('✅ Wannads inicializado para usuario:', userId);
+        console.log('URL:', wannadsUrl.toString());
         
         // Tracking
         trackEvent('wannads_offerwall_loaded', {
