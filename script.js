@@ -451,12 +451,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar CPX Research
     initCPXResearch();
 
-    // Inicializar Theorem Reach
-    initTheoremReach();
-
-    // Inicializar Pollfish
-    initPollfish();
-
     // Inicializar Wannads
     initWannads();
 
