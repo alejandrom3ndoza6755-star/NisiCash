@@ -1,4 +1,331 @@
 // ============================================
+// SISTEMA DE TRADUCCIÓN (i18n)
+// ============================================
+
+const translations = {
+    en: {
+        pageTitle: 'Earn Money Today | NisiCash',
+        navHome: 'Home',
+        navHow: 'How It Works',
+        navTestimonials: 'Testimonials',
+        navAbout: 'About Us',
+        navCTA: 'Start Now',
+        bannerVerified: 'Verified and secure platforms',
+        bannerUsers: 'More than 12,000 active users',
+        bannerPayments: 'Guaranteed payments',
+        heroBadge: 'Platform #1 in Latin America',
+        heroTitle: 'Earn Extra Money',
+        heroTitleHighlight: 'From Home',
+        heroSubtitle: 'Complete simple surveys and receive real payments via PayPal, Amazon or bank transfer. No initial investment, 100% free.',
+        heroBtn1: 'Start Now',
+        heroBtn2: 'See How It Works',
+        heroStat1: 'Active Users',
+        heroStat2: 'Paid This Month',
+        heroStat3: 'Rating',
+        card1Badge: 'RECOMMENDED',
+        card1Title: 'CPX Research Surveys',
+        card1Desc: 'Earn between $0.50 and $2.00 for answering simple questions. Low minimum payout.',
+        card1EarnPer: 'Per survey',
+        card1Time: 'Estimated time',
+        card1Tip: '💡 Tip:',
+        card1TipDesc: "If you don't see available surveys, try later. Surveys are constantly updated throughout the day.",
+        card2Badge: 'LATAM SPECIALIST',
+        card2Title: 'Wannads Surveys',
+        card2Desc: 'Platform specialized in Latin America. Withdrawal from $20 USD in 7 days.',
+        card2EarnPer: 'Per survey',
+        card2Time: 'Payment time',
+        card2LatamBold: '🌎 Perfect for El Salvador:',
+        card2LatamDesc: 'Wannads specializes in Latin America with localized surveys. Fast withdrawal in 7 days.',
+        howTitle: 'How Does It Work?',
+        step1Title: 'Register for Free',
+        step1Desc: 'Click on any survey and complete a quick registration. No credit card required.',
+        step2Title: 'Complete Surveys',
+        step2Desc: 'Answer simple questions about products, services and your opinion. Takes only minutes.',
+        step3Title: 'Receive Your Payment',
+        step3Desc: 'Withdraw your money via PayPal, Amazon or bank transfer. Minimum payment from $5.',
+        step4Title: 'Earn More',
+        step4Desc: 'Invite friends and earn additional commissions. The more you participate, the more you earn.',
+        paymentTitle: 'Available Payment Methods',
+        paymentBank: 'Bank',
+        trustTitle: 'Verified and Secure Platform',
+        trustSubtitle: 'We work with the most trusted companies in the industry',
+        badge1H4: 'Protected Data',
+        badge1P: 'SSL 256-bit encryption',
+        badge2H4: 'Secure Payments',
+        badge2P: 'Verified by PayPal',
+        badge3H4: 'Privacy',
+        badge3P: 'GDPR Compliant',
+        badge4H4: 'Verified',
+        badge4P: 'Registered Company',
+        liveBadge: 'LIVE',
+        liveH3: 'Users earning right now',
+        liveLabel: 'active users',
+        testimonialsTitle: 'User Experiences',
+        testimonialsNote: 'Results may vary depending on time dedicated and geographic location',
+        test1Name: 'Maria R.',
+        test1Text: '"Good way to earn extra money in my free time. The surveys are simple and payments arrive."',
+        test1Duration: 'User for 3 months',
+        test2Name: 'Juan L.',
+        test2Text: "\"Perfect to supplement income. You won't get rich, but it's extra money that helps.\"",
+        test2Duration: 'User for 5 months',
+        test3Name: 'Ana C.',
+        test3Text: '"I use it from my phone in spare time. Ideal for students looking for extra income."',
+        test3Duration: 'User for 2 months',
+        faqTitle: 'Frequently Asked Questions',
+        faq1Q: 'Is it really free?',
+        faq1A: "Yes, it's 100% free. You don't need to pay anything to register or complete surveys. We will never ask for your credit card information.",
+        faq2Q: 'How much can I earn?',
+        faq2A: 'It depends on the time you dedicate. On average, our users earn between $50 and $200 per month. Some dedicated users earn more than $500 monthly.',
+        faq3Q: 'When do I receive my payment?',
+        faq3A: 'Payments are processed between 24-48 hours after requesting withdrawal. The minimum payment is $5 for PayPal and $10 for other methods.',
+        faq4Q: 'From which countries can I participate?',
+        faq4A: 'We accept users from most countries in Latin America, Spain and the United States. Survey availability may vary by location.',
+        faq5Q: 'Do I need prior experience?',
+        faq5A: "No, you don't need any experience. The surveys are simple multiple-choice questions about products, services and your personal opinion.",
+        faq6Q: 'Can I use my phone?',
+        faq6A: 'Yes, our site is optimized for mobile devices. You can complete surveys from your phone, tablet or computer.',
+        newsletterTitle: 'Receive Exclusive Offers',
+        newsletterDesc: 'Subscribe and receive notifications of the best paid surveys',
+        newsletterPlaceholder: 'Your email address',
+        newsletterBtn: 'Subscribe',
+        newsletterNote: 'No spam. You can cancel at any time.',
+        newsletterSuccess: 'Subscription successful! Check your email.',
+        newsletterError: 'Please enter a valid email',
+        footerDesc: 'Your trusted platform to earn money completing online surveys. We connect users with the best monetization opportunities.',
+        footerLinksTitle: 'Quick Links',
+        footerLegalTitle: 'Legal',
+        footerContactTitle: 'Contact',
+        footerLinkHome: 'Home',
+        footerLinkAbout: 'About Us',
+        footerLinkHow: 'How It Works',
+        footerLinkTestimonials: 'Testimonials',
+        footerLinkFAQ: 'FAQ',
+        footerPrivacy: 'Privacy Policy',
+        footerTerms: 'Terms and Conditions',
+        footerCookies: 'Cookie Policy',
+        footerLegalNotice: 'Legal Notice',
+        footerHours: 'Mon-Fri: 9AM-6PM (GMT-6)',
+        footerSupport: '24/7 Support',
+        footerCopyright: '© 2024 NisiCash - All rights reserved',
+        footerBadge1: 'Secure payments',
+        footerBadge2: 'Protected data',
+        footerBadge3: 'Dedicated support',
+        paymentPaypal: '<strong><i class="fab fa-paypal"></i> PayPal</strong><br>Min. withdrawal: $5-$25 USD<br>Processing time: 24-48 hours<br>Fee: Free or 2-3%<br>Available in: 200+ countries',
+        paymentAmazon: '<strong><i class="fab fa-amazon"></i> Amazon Gift Cards</strong><br>Min. withdrawal: $5-$10 USD<br>Processing time: Instant to 24 hours<br>Fee: Free<br>Available in: USA, UK, Canada, Mexico, Spain and more',
+        paymentBanco: '<strong><i class="fas fa-university"></i> Bank Transfer</strong><br>Min. withdrawal: $50-$100 USD<br>Processing time: 3-7 business days<br>Fee: Varies by country<br>Available in: Most countries',
+        paymentGiftcards: '<strong><i class="fas fa-gift"></i> Gift Cards</strong><br>Options: Google Play, iTunes, Steam, Xbox, PlayStation, etc.<br>Min. withdrawal: $5-$10 USD<br>Processing time: Instant to 24 hours<br>Fee: Free',
+        notifSpinning: '<i class="fas fa-spinner fa-spin"></i> Sending...'
+    },
+    es: {
+        pageTitle: 'Gana Dinero Hoy | NisiCash',
+        navHome: 'Inicio',
+        navHow: 'Cómo Funciona',
+        navTestimonials: 'Testimonios',
+        navAbout: 'Nosotros',
+        navCTA: 'Comenzar Ahora',
+        bannerVerified: 'Plataformas verificadas y seguras',
+        bannerUsers: 'Más de 12,000 usuarios activos',
+        bannerPayments: 'Pagos garantizados',
+        heroBadge: 'Plataforma #1 en Latinoamérica',
+        heroTitle: 'Gana Dinero Extra',
+        heroTitleHighlight: 'Desde Casa',
+        heroSubtitle: 'Completa encuestas simples y recibe pagos reales por PayPal, Amazon o transferencia bancaria. Sin inversión inicial, 100% gratis.',
+        heroBtn1: 'Empezar Ahora',
+        heroBtn2: 'Ver Cómo Funciona',
+        heroStat1: 'Usuarios Activos',
+        heroStat2: 'Pagados Este Mes',
+        heroStat3: 'Valoración',
+        card1Badge: 'RECOMENDADO',
+        card1Title: 'Encuestas CPX Research',
+        card1Desc: 'Gana entre $0.50 y $2.00 por responder preguntas simples. Pago mínimo bajo.',
+        card1EarnPer: 'Por encuesta',
+        card1Time: 'Tiempo estimado',
+        card1Tip: '💡 Consejo:',
+        card1TipDesc: 'Si no ves encuestas disponibles, intenta más tarde. Las encuestas se actualizan constantemente durante el día.',
+        card2Badge: 'ESPECIALIZADO LATAM',
+        card2Title: 'Encuestas Wannads',
+        card2Desc: 'Plataforma especializada en América Latina. Retiro desde $20 USD en 7 días.',
+        card2EarnPer: 'Por encuesta',
+        card2Time: 'Tiempo de pago',
+        card2LatamBold: '🌎 Perfecto para El Salvador:',
+        card2LatamDesc: 'Wannads se especializa en América Latina con encuestas localizadas. Retiro rápido en 7 días.',
+        howTitle: '¿Cómo Funciona?',
+        step1Title: 'Regístrate Gratis',
+        step1Desc: 'Haz clic en cualquier encuesta y completa un registro rápido. No requiere tarjeta de crédito.',
+        step2Title: 'Completa Encuestas',
+        step2Desc: 'Responde preguntas simples sobre productos, servicios y tu opinión. Toma solo minutos.',
+        step3Title: 'Recibe tu Pago',
+        step3Desc: 'Retira tu dinero por PayPal, Amazon o transferencia bancaria. Pago mínimo desde $5.',
+        step4Title: 'Gana Más',
+        step4Desc: 'Invita amigos y gana comisiones adicionales. Mientras más participas, más ganas.',
+        paymentTitle: 'Métodos de Pago Disponibles',
+        paymentBank: 'Banco',
+        trustTitle: 'Plataforma Verificada y Segura',
+        trustSubtitle: 'Trabajamos con las empresas más confiables de la industria',
+        badge1H4: 'Datos Protegidos',
+        badge1P: 'Encriptación SSL 256-bit',
+        badge2H4: 'Pagos Seguros',
+        badge2P: 'Verificados por PayPal',
+        badge3H4: 'Privacidad',
+        badge3P: 'GDPR Compliant',
+        badge4H4: 'Verificado',
+        badge4P: 'Empresa Registrada',
+        liveBadge: 'EN VIVO',
+        liveH3: 'Usuarios ganando ahora mismo',
+        liveLabel: 'usuarios activos',
+        testimonialsTitle: 'Experiencias de Usuarios',
+        testimonialsNote: 'Los resultados pueden variar según el tiempo dedicado y la ubicación geográfica',
+        test1Name: 'María R.',
+        test1Text: '"Buena forma de ganar dinero extra en mi tiempo libre. Las encuestas son sencillas y los pagos llegan."',
+        test1Duration: 'Usuario desde hace 3 meses',
+        test2Name: 'Juan L.',
+        test2Text: '"Perfecto para complementar ingresos. No te haces rico, pero es dinero extra que viene bien."',
+        test2Duration: 'Usuario desde hace 5 meses',
+        test3Name: 'Ana C.',
+        test3Text: '"Lo uso desde mi celular en ratos libres. Ideal para estudiantes que buscan ingresos extra."',
+        test3Duration: 'Usuario desde hace 2 meses',
+        faqTitle: 'Preguntas Frecuentes',
+        faq1Q: '¿Es realmente gratis?',
+        faq1A: 'Sí, es 100% gratis. No necesitas pagar nada para registrarte ni para completar encuestas. Nunca te pediremos información de tarjeta de crédito.',
+        faq2Q: '¿Cuánto puedo ganar?',
+        faq2A: 'Depende del tiempo que dediques. En promedio, nuestros usuarios ganan entre $50 y $200 al mes. Algunos usuarios dedicados ganan más de $500 mensuales.',
+        faq3Q: '¿Cuándo recibo mi pago?',
+        faq3A: 'Los pagos se procesan entre 24-48 horas después de solicitar el retiro. El pago mínimo es de $5 para PayPal y $10 para otros métodos.',
+        faq4Q: '¿Desde qué países puedo participar?',
+        faq4A: 'Aceptamos usuarios de la mayoría de países de Latinoamérica, España y Estados Unidos. La disponibilidad de encuestas puede variar según tu ubicación.',
+        faq5Q: '¿Necesito experiencia previa?',
+        faq5A: 'No, no necesitas ninguna experiencia. Las encuestas son simples preguntas de opción múltiple sobre productos, servicios y tu opinión personal.',
+        faq6Q: '¿Puedo usar mi celular?',
+        faq6A: 'Sí, nuestro sitio está optimizado para dispositivos móviles. Puedes completar encuestas desde tu teléfono, tablet o computadora.',
+        newsletterTitle: 'Recibe Ofertas Exclusivas',
+        newsletterDesc: 'Suscríbete y recibe notificaciones de las mejores encuestas pagadas',
+        newsletterPlaceholder: 'Tu correo electrónico',
+        newsletterBtn: 'Suscribirse',
+        newsletterNote: 'No spam. Puedes cancelar en cualquier momento.',
+        newsletterSuccess: '¡Suscripción exitosa! Revisa tu email.',
+        newsletterError: 'Por favor ingresa un email válido',
+        footerDesc: 'Tu plataforma confiable para ganar dinero completando encuestas online. Conectamos a usuarios con las mejores oportunidades de monetización.',
+        footerLinksTitle: 'Enlaces Rápidos',
+        footerLegalTitle: 'Legal',
+        footerContactTitle: 'Contacto',
+        footerLinkHome: 'Inicio',
+        footerLinkAbout: 'Sobre Nosotros',
+        footerLinkHow: 'Cómo Funciona',
+        footerLinkTestimonials: 'Testimonios',
+        footerLinkFAQ: 'Preguntas Frecuentes',
+        footerPrivacy: 'Política de Privacidad',
+        footerTerms: 'Términos y Condiciones',
+        footerCookies: 'Política de Cookies',
+        footerLegalNotice: 'Aviso Legal',
+        footerHours: 'Lun-Vie: 9AM-6PM (GMT-6)',
+        footerSupport: 'Soporte 24/7',
+        footerCopyright: '© 2024 NisiCash - Todos los derechos reservados',
+        footerBadge1: 'Pagos seguros',
+        footerBadge2: 'Datos protegidos',
+        footerBadge3: 'Soporte dedicado',
+        paymentPaypal: '<strong><i class="fab fa-paypal"></i> PayPal</strong><br>Retiro mínimo: $5-$25 USD<br>Tiempo de procesamiento: 24-48 horas<br>Comisión: Gratis o 2-3%<br>Disponible en: 200+ países',
+        paymentAmazon: '<strong><i class="fab fa-amazon"></i> Amazon Gift Cards</strong><br>Retiro mínimo: $5-$10 USD<br>Tiempo de procesamiento: Instantáneo a 24 horas<br>Comisión: Gratis<br>Disponible en: USA, UK, Canadá, México, España y más',
+        paymentBanco: '<strong><i class="fas fa-university"></i> Transferencia Bancaria</strong><br>Retiro mínimo: $50-$100 USD<br>Tiempo de procesamiento: 3-7 días hábiles<br>Comisión: Variable según país<br>Disponible en: La mayoría de países',
+        paymentGiftcards: '<strong><i class="fas fa-gift"></i> Gift Cards</strong><br>Opciones: Google Play, iTunes, Steam, Xbox, PlayStation, etc.<br>Retiro mínimo: $5-$10 USD<br>Tiempo de procesamiento: Instantáneo a 24 horas<br>Comisión: Gratis',
+        notifSpinning: '<i class="fas fa-spinner fa-spin"></i> Enviando...'
+    }
+};
+
+// Current language state
+let currentLanguage = 'en';
+
+// Get translation helper
+function t(key) {
+    return (translations[currentLanguage] && translations[currentLanguage][key]) ||
+           (translations['en'] && translations['en'][key]) || key;
+}
+
+// Initialize language system
+function initLanguage() {
+    const savedLang = localStorage.getItem('nisicash_language') || 'en';
+    setLanguage(savedLang, false);
+
+    // Language option buttons
+    document.querySelectorAll('.lang-option').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const lang = this.getAttribute('data-lang');
+            setLanguage(lang, true);
+            closeLangDropdown();
+        });
+    });
+
+    // Toggle dropdown
+    const currentBtn = document.querySelector('.lang-current-btn');
+    if (currentBtn) {
+        currentBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const dropdown = document.querySelector('.lang-dropdown');
+            const isOpen = dropdown.classList.contains('open');
+            dropdown.classList.toggle('open', !isOpen);
+            this.setAttribute('aria-expanded', !isOpen);
+        });
+    }
+
+    // Close when clicking outside
+    document.addEventListener('click', function () {
+        closeLangDropdown();
+    });
+}
+
+function closeLangDropdown() {
+    const dropdown = document.querySelector('.lang-dropdown');
+    const btn = document.querySelector('.lang-current-btn');
+    if (dropdown) dropdown.classList.remove('open');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function setLanguage(lang, save) {
+    if (!translations[lang]) return;
+    currentLanguage = lang;
+    if (save) localStorage.setItem('nisicash_language', lang);
+
+    // Update html lang attribute
+    document.documentElement.lang = lang;
+
+    // Update page title
+    if (translations[lang].pageTitle) {
+        document.title = translations[lang].pageTitle;
+    }
+
+    // Apply to data-i18n elements (text content)
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key] !== undefined) {
+            el.textContent = translations[lang][key];
+        }
+    });
+
+    // Apply to data-i18n-placeholder elements
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key] !== undefined) {
+            el.placeholder = translations[lang][key];
+        }
+    });
+
+    // Update lang button UI
+    document.querySelectorAll('.lang-option').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+
+    const flagEl = document.querySelector('.lang-current-flag');
+    const codeEl = document.querySelector('.lang-current-code');
+    if (lang === 'en') {
+        if (flagEl) flagEl.textContent = '🇺🇸';
+        if (codeEl) codeEl.textContent = 'EN';
+    } else if (lang === 'es') {
+        if (flagEl) flagEl.textContent = '🇪🇸';
+        if (codeEl) codeEl.textContent = 'ES';
+    }
+}
+
+// ============================================
 // CONFIGURACIÓN DE CPX RESEARCH
 // ============================================
 
@@ -431,7 +758,10 @@ function initAffiliateTracking() {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Sitio web cargado correctamente');
+    console.log('NisiCash loaded');
+
+    // Inicializar sistema de idiomas (PRIMERO)
+    initLanguage();
 
     // Inicializar navbar
     initNavbar();
@@ -601,30 +931,10 @@ function showPaymentInfo(method) {
     const infoText = document.getElementById('paymentInfoText');
     
     const paymentInfo = {
-        paypal: {
-            icon: 'fab fa-paypal',
-            color: '#00457C',
-            title: 'PayPal',
-            text: '<strong><i class="fab fa-paypal"></i> PayPal</strong><br>Retiro mínimo: $5-$25 USD (según plataforma)<br>Tiempo de procesamiento: 24-48 horas<br>Comisión: Gratis o 2-3%<br>Disponible en: 200+ países'
-        },
-        amazon: {
-            icon: 'fab fa-amazon',
-            color: '#FF9900',
-            title: 'Amazon',
-            text: '<strong><i class="fab fa-amazon"></i> Amazon Gift Cards</strong><br>Retiro mínimo: $5-$10 USD<br>Tiempo de procesamiento: Instantáneo a 24 horas<br>Comisión: Gratis<br>Disponible en: USA, UK, Canadá, México, España y más'
-        },
-        banco: {
-            icon: 'fas fa-university',
-            color: '#2ecc71',
-            title: 'Transferencia Bancaria',
-            text: '<strong><i class="fas fa-university"></i> Transferencia Bancaria</strong><br>Retiro mínimo: $50-$100 USD<br>Tiempo de procesamiento: 3-7 días hábiles<br>Comisión: Variable según país<br>Disponible en: La mayoría de países'
-        },
-        giftcards: {
-            icon: 'fas fa-gift',
-            color: '#e74c3c',
-            title: 'Gift Cards',
-            text: '<strong><i class="fas fa-gift"></i> Gift Cards</strong><br>Opciones: Google Play, iTunes, Steam, Xbox, PlayStation, etc.<br>Retiro mínimo: $5-$10 USD<br>Tiempo de procesamiento: Instantáneo a 24 horas<br>Comisión: Gratis'
-        }
+        paypal:    { text: t('paymentPaypal') },
+        amazon:    { text: t('paymentAmazon') },
+        banco:     { text: t('paymentBanco') },
+        giftcards: { text: t('paymentGiftcards') }
     };
     
     const info = paymentInfo[method];
@@ -662,7 +972,7 @@ function initNewsletter() {
         
         // Validar email
         if (!isValidEmail(email)) {
-            showNotification('Por favor ingresa un email válido', 'error');
+            showNotification(t('newsletterError'), 'error');
             return;
         }
         
@@ -677,7 +987,7 @@ function initNewsletter() {
             // Guardar en localStorage
             localStorage.setItem('newsletter_email', email);
             
-            showNotification('¡Suscripción exitosa! Revisa tu email.', 'success');
+            showNotification(t('newsletterSuccess'), 'success');
             emailInput.value = '';
             button.innerHTML = originalText;
             button.disabled = false;
