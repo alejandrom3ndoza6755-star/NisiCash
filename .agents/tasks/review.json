@@ -1,0 +1,34 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": 1,
+      "label": "Fail-open token check",
+      "severity": "blocking",
+      "confidence": "confirmed",
+      "summary": "if (INTERNAL_TOKEN && ...) skips auth when INTERNAL_RECORD_TOKEN is unset. Any caller can write arbitrary earnings. Fix: invert to if (!INTERNAL_TOKEN || req.headers['x-internal-token'] !== INTERNAL_TOKEN)."
+    },
+    {
+      "id": 2,
+      "label": "Auto-create on first read inflates KV",
+      "severity": "blocking",
+      "confidence": "confirmed",
+      "summary": "user-stats.js persists a blank 4 KB profile for every visitor on first poll. Remove kv.set from the GET handler; create the record only in record-survey.js when the first postback arrives."
+    },
+    {
+      "id": 3,
+      "label": "Hardcoded production URL",
+      "severity": "blocking",
+      "confidence": "confirmed",
+      "summary": "VERCEL_BASE_URL = 'https://nisi-cash.vercel.app' in script.js breaks the dashboard on preview/staging/local deployments. Replace with window.location.origin."
+    },
+    {
+      "id": 4,
+      "label": "pending→completed uses prevAmount, discards payout adjustment",
+      "severity": "advisory",
+      "confidence": "possible",
+      "summary": "When a completion postback carries a higher amount than the pending postback, the user is credited the lower figure. Confirm whether CPX/Wannads ever adjust payout at completion; if so, use amt instead of prevAmount."
+    }
+  ],
+  "reviewDoc": "c:\\Users\\Alejandro\\Documents\\NisiCash-main\\.agents\\tasks\\review.md"
+}
