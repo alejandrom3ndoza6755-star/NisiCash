@@ -117,8 +117,11 @@ const translations = {
         notifSpinning: '<i class="fas fa-spinner fa-spin"></i> Sending...',
         dashboardNotice: 'To keep your progress, always access from the same browser and device. Clearing your browser data will reset your history.',
         dashboardSurveys: 'Surveys Completed',
+        dashboardPoints: 'Points Earned',
         dashboardEarned: 'Verified Earnings',
         dashboardPending: 'Pending',
+        conversionRate: '200 points = $1 USD',
+        withdrawMin: 'Minimum withdrawal: 3,000 points ($15)',
         dashboardRecent: 'Recent Transactions',
         dashboardLoading: 'Loading...',
         dashboardError: 'Could not load data. Try again later.',
@@ -264,8 +267,11 @@ const translations = {
         dashboardNotice: 'Para mantener tu progreso, accede siempre desde el mismo navegador y dispositivo. Si borras los datos del navegador, tu historial se reiniciará.',
         dashboardTitle: 'Mi Progreso',
         dashboardSurveys: 'Encuestas Completadas',
+        dashboardPoints: 'Puntos Ganados',
         dashboardEarned: 'Ganancias Verificadas',
         dashboardPending: 'Pendiente',
+        conversionRate: '200 puntos = $1 USD',
+        withdrawMin: 'Retiro mínimo: 3,000 puntos ($15)',
         dashboardRecent: 'Transacciones Recientes',
         dashboardLoading: 'Cargando...',
         dashboardError: 'No se pudieron cargar los datos. Intenta más tarde.',
@@ -851,10 +857,18 @@ function renderTransactions(history) {
         const date = new Date(tx.date).toLocaleDateString(currentLanguage === 'es' ? 'es-MX' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         const statusLabel = t('txStatus' + tx.status.charAt(0).toUpperCase() + tx.status.slice(1)) || tx.status;
         const color = statusColors[tx.status] || 'var(--text-secondary)';
+        
+        // Mostrar puntos si existe, si no mostrar el amount antiguo
+        const points = tx.points_earned || 0;
+        const usd = tx.user_usd_earned || tx.amount || 0;
+        const displayValue = points > 0 
+            ? `<span style="font-weight:700; color:var(--text-primary);">${points} pts</span><span style="font-size:0.75rem; color:var(--text-light); margin-left:0.25rem;">($${usd.toFixed(2)})</span>`
+            : `<span style="font-weight:700; color:var(--text-primary);">$${usd.toFixed(2)}</span>`;
+        
         return `<div style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem; border-bottom:1px solid var(--border-color); flex-wrap:wrap; gap:0.5rem;">
             <span style="font-size:0.8rem; color:var(--text-light); min-width:110px;">${date}</span>
             <span style="font-size:0.8rem; background:var(--light-bg); border-radius:6px; padding:2px 8px; text-transform:uppercase; font-weight:600; color:var(--primary-color);">${tx.platform}</span>
-            <span style="font-weight:700; color:var(--text-primary);">$${tx.amount.toFixed(2)}</span>
+            ${displayValue}
             <span style="font-size:0.8rem; color:${color}; font-weight:600;">${statusLabel}</span>
         </div>`;
     }).join('');
@@ -868,12 +882,25 @@ async function loadDashboardData() {
         const res = await fetch(`${VERCEL_BASE_URL}/api/user-stats?user_id=${encodeURIComponent(userId)}`);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
+        
+        // Elementos del dashboard
         const surveyEl = document.getElementById('stat-surveys');
-        const earnedEl = document.getElementById('stat-earned');
+        const pointsEl = document.getElementById('stat-points');
+        const pointsUsdEl = document.getElementById('stat-points-usd');
         const pendingEl = document.getElementById('stat-pending');
+        const pendingUsdEl = document.getElementById('stat-pending-usd');
+        
+        // Actualizar valores
         if (surveyEl) surveyEl.textContent = data.surveys_completed || 0;
-        if (earnedEl) earnedEl.textContent = '$' + ((data.total_earned || 0).toFixed(2));
-        if (pendingEl) pendingEl.textContent = '$' + ((data.pending_earned || 0).toFixed(2));
+        
+        // Mostrar puntos ganados
+        if (pointsEl) pointsEl.textContent = data.total_earned_points || 0;
+        if (pointsUsdEl) pointsUsdEl.textContent = '($' + ((data.total_earned_usd || 0).toFixed(2)) + ')';
+        
+        // Mostrar puntos pendientes
+        if (pendingEl) pendingEl.textContent = data.pending_earned_points || 0;
+        if (pendingUsdEl) pendingUsdEl.textContent = '($' + ((data.pending_earned_usd || 0).toFixed(2)) + ')';
+        
         renderTransactions(data.history || []);
     } catch (err) {
         console.warn('Dashboard load failed:', err);
@@ -881,10 +908,10 @@ async function loadDashboardData() {
             container.innerHTML = `<p style="text-align:center; color:var(--danger-color); padding:1rem;" data-i18n="dashboardError">${t('dashboardError')}</p>`;
         }
         const surveyEl = document.getElementById('stat-surveys');
-        const earnedEl = document.getElementById('stat-earned');
+        const pointsEl = document.getElementById('stat-points');
         const pendingEl = document.getElementById('stat-pending');
         if (surveyEl) surveyEl.textContent = '-';
-        if (earnedEl) earnedEl.textContent = '-';
+        if (pointsEl) pointsEl.textContent = '-';
         if (pendingEl) pendingEl.textContent = '-';
     }
 }

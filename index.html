@@ -251,15 +251,24 @@
       <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" data-i18n="dashboardSurveys">Surveys Completed</div>
     </div>
     <div style="flex: 1; min-width: 140px; background: var(--light-bg); border-radius: 12px; padding: 1.25rem; text-align: center;">
-      <i class="fas fa-dollar-sign" style="font-size: 1.8rem; color: var(--secondary-color); margin-bottom: 0.5rem; display: block;"></i>
-      <div style="font-size: 2rem; font-weight: 700; color: var(--secondary-color);" id="stat-earned">-</div>
-      <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" data-i18n="dashboardEarned">Verified Earnings</div>
+      <i class="fas fa-star" style="font-size: 1.8rem; color: var(--secondary-color); margin-bottom: 0.5rem; display: block;"></i>
+      <div style="font-size: 2rem; font-weight: 700; color: var(--secondary-color);" id="stat-points">-</div>
+      <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" data-i18n="dashboardPoints">Points Earned</div>
+      <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem;" id="stat-points-usd">($0.00)</div>
     </div>
     <div style="flex: 1; min-width: 140px; background: var(--light-bg); border-radius: 12px; padding: 1.25rem; text-align: center;">
       <i class="fas fa-hourglass-half" style="font-size: 1.8rem; color: var(--accent-color); margin-bottom: 0.5rem; display: block;"></i>
       <div style="font-size: 2rem; font-weight: 700; color: var(--accent-color);" id="stat-pending">-</div>
       <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" data-i18n="dashboardPending">Pending</div>
+      <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem;" id="stat-pending-usd">($0.00)</div>
     </div>
+  </div>
+  <!-- Conversion Info -->
+  <div style="background: #e7f3ff; border: 1px solid #90caf9; border-radius: 10px; padding: 1rem; margin-bottom: 1.5rem; text-align: center;">
+    <i class="fas fa-exchange-alt" style="color: #1976d2; margin-right: 0.5rem;"></i>
+    <strong style="color: #1976d2;" data-i18n="conversionRate">200 points = $1 USD</strong>
+    <span style="color: #1976d2; margin-left: 0.5rem;">•</span>
+    <span style="color: #1976d2; margin-left: 0.5rem;" data-i18n="withdrawMin">Minimum withdrawal: 3,000 points ($15)</span>
   </div>
   <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;" data-i18n="dashboardRecent">Recent Transactions</h3>
   <div id="transactions-list" style="min-height: 60px;">
