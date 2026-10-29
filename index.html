@@ -456,6 +456,115 @@
     </div>
 </div>
 
+<!-- Referral & Raffle Section -->
+<section class="referral-section" id="referral-section">
+    <div class="container">
+        <div class="referral-header">
+            <div class="raffle-badge">
+                <i class="fas fa-trophy"></i>
+                <span data-i18n="raffleActive">ACTIVE RAFFLE</span>
+            </div>
+            <h2 class="referral-title">
+                <i class="fas fa-gift"></i>
+                <span data-i18n="referralTitle">Share and Win $100</span>
+            </h2>
+            <p class="referral-subtitle" data-i18n="referralSubtitle">
+                Share NisiCash with your friends and automatically enter our monthly raffle for $100 USD!
+            </p>
+        </div>
+
+        <div class="referral-content">
+            <!-- Left Side: Share Buttons -->
+            <div class="share-container">
+                <h3 data-i18n="shareTitle">Share on Social Media</h3>
+                <p data-i18n="shareDescription">Each share = 1 entry to the raffle</p>
+                
+                <div class="share-buttons">
+                    <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">
+                        <i class="fab fa-whatsapp"></i>
+                        <span data-i18n="shareWhatsApp">Share on WhatsApp</span>
+                    </button>
+                    <button class="share-btn facebook" onclick="shareOnFacebook()">
+                        <i class="fab fa-facebook-f"></i>
+                        <span data-i18n="shareFacebook">Share on Facebook</span>
+                    </button>
+                    <button class="share-btn twitter" onclick="shareOnTwitter()">
+                        <i class="fab fa-twitter"></i>
+                        <span data-i18n="shareTwitter">Share on Twitter</span>
+                    </button>
+                    <button class="share-btn telegram" onclick="shareOnTelegram()">
+                        <i class="fab fa-telegram-plane"></i>
+                        <span data-i18n="shareTelegram">Share on Telegram</span>
+                    </button>
+                </div>
+
+                <div class="copy-link-container">
+                    <h4 data-i18n="copyLinkTitle">Or copy your referral link:</h4>
+                    <div class="copy-link-box">
+                        <input type="text" id="referralLink" readonly value="Loading...">
+                        <button class="copy-btn" onclick="copyReferralLink()">
+                            <i class="fas fa-copy"></i>
+                            <span data-i18n="copyBtn">Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Raffle Stats -->
+            <div class="raffle-stats">
+                <div class="raffle-prize">
+                    <i class="fas fa-dollar-sign"></i>
+                    <div class="prize-amount">$100</div>
+                    <div class="prize-label" data-i18n="prizeLabel">Monthly Prize</div>
+                </div>
+
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-share-alt"></i>
+                        <div class="stat-value" id="userShares">0</div>
+                        <div class="stat-label" data-i18n="yourShares">Your Shares</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-ticket-alt"></i>
+                        <div class="stat-value" id="userEntries">0</div>
+                        <div class="stat-label" data-i18n="yourEntries">Your Entries</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-value" id="totalParticipants">0</div>
+                        <div class="stat-label" data-i18n="totalParticipants">Total Participants</div>
+                    </div>
+                </div>
+
+                <div class="raffle-timer">
+                    <div class="timer-label" data-i18n="raffleEndsIn">Raffle ends in:</div>
+                    <div class="timer-display" id="raffleTimer">
+                        <div class="timer-unit">
+                            <span class="timer-value" id="days">00</span>
+                            <span class="timer-text" data-i18n="days">days</span>
+                        </div>
+                        <div class="timer-unit">
+                            <span class="timer-value" id="hours">00</span>
+                            <span class="timer-text" data-i18n="hours">hours</span>
+                        </div>
+                        <div class="timer-unit">
+                            <span class="timer-value" id="minutes">00</span>
+                            <span class="timer-text" data-i18n="minutes">min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="raffle-info">
+                    <i class="fas fa-info-circle"></i>
+                    <p data-i18n="raffleRules">
+                        The winner will be randomly selected at the end of the month. You must have an active account to claim your prize.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <footer>
     <div class="footer-container">
         <!-- Newsletter -->

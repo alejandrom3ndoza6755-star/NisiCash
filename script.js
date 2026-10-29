@@ -125,7 +125,29 @@ const translations = {
         dashboardNoTx: 'No transactions yet.',
         txStatusCompleted: 'Completed',
         txStatusPending: 'Pending',
-        txStatusReversed: 'Reversed'
+        txStatusReversed: 'Reversed',
+        // Referral & Raffle
+        raffleActive: 'ACTIVE RAFFLE',
+        referralTitle: 'Share and Win $100',
+        referralSubtitle: 'Share NisiCash with your friends and automatically enter our monthly raffle for $100 USD!',
+        shareTitle: 'Share on Social Media',
+        shareDescription: 'Each share = 1 entry to the raffle',
+        shareWhatsApp: 'Share on WhatsApp',
+        shareFacebook: 'Share on Facebook',
+        shareTwitter: 'Share on Twitter',
+        shareTelegram: 'Share on Telegram',
+        copyLinkTitle: 'Or copy your referral link:',
+        copyBtn: 'Copy',
+        copied: 'Copied!',
+        prizeLabel: 'Monthly Prize',
+        yourShares: 'Your Shares',
+        yourEntries: 'Your Entries',
+        totalParticipants: 'Total Participants',
+        raffleEndsIn: 'Raffle ends in:',
+        days: 'days',
+        hours: 'hours',
+        minutes: 'min',
+        raffleRules: 'The winner will be randomly selected at the end of the month. You must have an active account to claim your prize.'
     },
     es: {
         pageTitle: 'Gana Dinero Hoy | NisiCash',
@@ -250,12 +272,31 @@ const translations = {
         dashboardNoTx: 'Sin transacciones aún.',
         txStatusCompleted: 'Completada',
         txStatusPending: 'Pendiente',
-        txStatusReversed: 'Revertida'
+        txStatusReversed: 'Revertida',
+        // Referral & Raffle
+        raffleActive: 'SORTEO ACTIVO',
+        referralTitle: 'Comparte y Gana $100',
+        referralSubtitle: '¡Comparte NisiCash con tus amigos y participa automáticamente en nuestro sorteo mensual de $100 USD!',
+        shareTitle: 'Comparte en Redes Sociales',
+        shareDescription: 'Cada compartido = 1 entrada al sorteo',
+        shareWhatsApp: 'Compartir en WhatsApp',
+        shareFacebook: 'Compartir en Facebook',
+        shareTwitter: 'Compartir en Twitter',
+        shareTelegram: 'Compartir en Telegram',
+        copyLinkTitle: 'O copia tu enlace de referido:',
+        copyBtn: 'Copiar',
+        copied: '¡Copiado!',
+        prizeLabel: 'Premio Mensual',
+        yourShares: 'Tus Compartidos',
+        yourEntries: 'Tus Entradas',
+        totalParticipants: 'Participantes Totales',
+        raffleEndsIn: 'El sorteo termina en:',
+        days: 'días',
+        hours: 'horas',
+        minutes: 'min',
+        raffleRules: 'El ganador será seleccionado aleatoriamente al final del mes. Debes tener una cuenta activa para reclamar tu premio.'
     }
 };
-
-// Current language state
-let currentLanguage = 'en';
 
 // Get translation helper
 function t(key) {
@@ -1200,3 +1241,254 @@ if (isMobile()) {
 } else {
     console.log('Usuario en escritorio');
 }
+
+
+// ============================================
+// REFERRAL & RAFFLE SYSTEM
+// ============================================
+
+// Generate or get unique user ID
+function getUserId() {
+  let userId = localStorage.getItem('nisicash_user_id');
+  if (!userId) {
+    userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('nisicash_user_id', userId);
+  }
+  return userId;
+}
+
+// Generate referral link
+function generateReferralLink() {
+  const userId = getUserId();
+  const baseUrl = window.location.origin + window.location.pathname;
+  return `${baseUrl}?ref=${userId}`;
+}
+
+// Share on WhatsApp
+function shareOnWhatsApp() {
+  const userId = getUserId();
+  const text = encodeURIComponent('¡Gana dinero completando encuestas! 💰\n\nÚnete a NisiCash y empieza a ganar hoy mismo. Es 100% gratis ✅\n\nRegistrate aquí: ' + generateReferralLink());
+  const url = `https://wa.me/?text=${text}`;
+  
+  recordShare('whatsapp');
+  window.open(url, '_blank');
+}
+
+// Share on Facebook
+function shareOnFacebook() {
+  const userId = getUserId();
+  const url = encodeURIComponent(generateReferralLink());
+  const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+  
+  recordShare('facebook');
+  window.open(shareUrl, '_blank', 'width=600,height=400');
+}
+
+// Share on Twitter
+function shareOnTwitter() {
+  const userId = getUserId();
+  const text = encodeURIComponent('💰 ¡Gana dinero con encuestas online! Únete a NisiCash 👉');
+  const url = encodeURIComponent(generateReferralLink());
+  const hashtags = 'GanarDinero,EncuestasPagadas,DineroOnline';
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`;
+  
+  recordShare('twitter');
+  window.open(twitterUrl, '_blank', 'width=600,height=400');
+}
+
+// Share on Telegram
+function shareOnTelegram() {
+  const userId = getUserId();
+  const text = encodeURIComponent('💰 ¡Gana dinero completando encuestas!\n\nÚnete a NisiCash y empieza a ganar hoy mismo:\n' + generateReferralLink());
+  const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(generateReferralLink())}&text=${text}`;
+  
+  recordShare('telegram');
+  window.open(telegramUrl, '_blank');
+}
+
+// Copy referral link
+function copyReferralLink() {
+  const input = document.getElementById('referralLink');
+  input.select();
+  input.setSelectionRange(0, 99999); // For mobile devices
+  
+  try {
+    document.execCommand('copy');
+    
+    // Change button text temporarily
+    const btn = event.target.closest('.copy-btn');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> <span data-i18n="copied">Copied!</span>';
+    btn.style.background = '#27ae60';
+    
+    setTimeout(() => {
+      btn.innerHTML = originalHTML;
+      btn.style.background = '';
+    }, 2000);
+    
+    recordShare('copy');
+  } catch (err) {
+    console.error('Failed to copy:', err);
+    alert('Failed to copy link. Please copy manually.');
+  }
+}
+
+// Record share to backend
+async function recordShare(platform) {
+  const userId = getUserId();
+  
+  try {
+    const response = await fetch('/api/record-share', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        platform: platform
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Update UI with new stats
+      updateReferralStats();
+      
+      // Show success notification
+      showNotification(`¡Compartido! Ahora tienes ${data.raffle_entries} ${data.raffle_entries === 1 ? 'entrada' : 'entradas'} para el sorteo 🎉`);
+    }
+  } catch (error) {
+    console.error('Error recording share:', error);
+  }
+}
+
+// Update referral stats
+async function updateReferralStats() {
+  const userId = getUserId();
+  
+  try {
+    const response = await fetch(`/api/get-referral-stats?user_id=${userId}`);
+    
+    if (response.ok) {
+      const data = await response.json();
+      
+      // Update user stats
+      document.getElementById('userShares').textContent = data.user.total_shares;
+      document.getElementById('userEntries').textContent = data.user.raffle_entries;
+      document.getElementById('totalParticipants').textContent = data.global.total_participants;
+      
+      // Update raffle timer
+      if (data.global.raffle_end_date) {
+        startRaffleCountdown(data.global.raffle_end_date);
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching referral stats:', error);
+  }
+}
+
+// Raffle countdown timer
+function startRaffleCountdown(endDate) {
+  const end = new Date(endDate).getTime();
+  
+  function updateTimer() {
+    const now = new Date().getTime();
+    const distance = end - now;
+    
+    if (distance < 0) {
+      document.getElementById('days').textContent = '00';
+      document.getElementById('hours').textContent = '00';
+      document.getElementById('minutes').textContent = '00';
+      return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    
+    document.getElementById('days').textContent = String(days).padStart(2, '0');
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+  }
+  
+  updateTimer();
+  setInterval(updateTimer, 60000); // Update every minute
+}
+
+// Show notification
+function showNotification(message) {
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 10000;
+    font-weight: 600;
+    animation: slideIn 0.3s ease-out;
+  `;
+  notification.textContent = message;
+  
+  document.body.appendChild(notification);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease-out';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Initialize referral system on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Set referral link
+  const referralLink = document.getElementById('referralLink');
+  if (referralLink) {
+    referralLink.value = generateReferralLink();
+  }
+  
+  // Load referral stats
+  updateReferralStats();
+  
+  // Check if user came from a referral link
+  const urlParams = new URLSearchParams(window.location.search);
+  const refId = urlParams.get('ref');
+  if (refId && refId !== getUserId()) {
+    // Store referrer information
+    localStorage.setItem('nisicash_referrer', refId);
+    
+    // Show welcome message
+    showNotification('¡Bienvenido! Has sido referido por un amigo 🎉');
+  }
+});
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
