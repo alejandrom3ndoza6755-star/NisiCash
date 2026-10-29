@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - NisiCash</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-card.users i { color: #667eea; }
+        .stat-card.earnings i { color: #27ae60; }
+        .stat-card.pending i { color: #f39c12; }
+        .stat-card.shares i { color: #e74c3c; }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-box {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge.paid {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #7f8c8d;
+        }
+
+        .loading i {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #7f8c8d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .export-btn {
+            float: right;
+            margin-top: -3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-shield-alt"></i> Panel de Administración - NisiCash</h1>
+            <p>Gestiona usuarios, pagos y estadísticas del sitio</p>
+        </div>
+
+        <!-- Estadísticas Globales -->
+        <div class="stats-grid">
+            <div class="stat-card users">
+                <i class="fas fa-users"></i>
+                <div class="stat-value" id="totalUsers">-</div>
+                <div class="stat-label">Usuarios Totales</div>
+            </div>
+            <div class="stat-card earnings">
+                <i class="fas fa-dollar-sign"></i>
+                <div class="stat-value" id="totalEarnings">$0</div>
+                <div class="stat-label">Ganancias Totales</div>
+            </div>
+            <div class="stat-card pending">
+                <i class="fas fa-clock"></i>
+                <div class="stat-value" id="pendingPayments">0</div>
+                <div class="stat-label">Pagos Pendientes</div>
+            </div>
+            <div class="stat-card shares">
+                <i class="fas fa-share-alt"></i>
+                <div class="stat-value" id="totalShares">0</div>
+                <div class="stat-label">Compartidos Totales</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="section">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('users')">
+                    <i class="fas fa-users"></i> Usuarios
+                </button>
+                <button class="tab" onclick="showTab('payments')">
+                    <i class="fas fa-money-bill-wave"></i> Solicitudes de Pago
+                </button>
+                <button class="tab" onclick="showTab('referrals')">
+                    <i class="fas fa-gift"></i> Sistema de Referidos
+                </button>
+            </div>
+
+            <!-- Tabla de Usuarios -->
+            <div id="usersTab" class="tab-content">
+                <button class="btn btn-primary export-btn" onclick="exportUsers()">
+                    <i class="fas fa-download"></i> Exportar CSV
+                </button>
+                <h2><i class="fas fa-users"></i> Usuarios Registrados</h2>
+                
+                <div class="search-box">
+                    <input type="text" id="searchUsers" placeholder="Buscar por ID de usuario..." onkeyup="filterUsers()">
+                </div>
+
+                <div id="usersTable">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Cargando usuarios...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Pagos -->
+            <div id="paymentsTab" class="tab-content" style="display: none;">
+                <h2><i class="fas fa-money-bill-wave"></i> Solicitudes de Pago</h2>
+                <div id="paymentsTable">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Sistema de pagos en desarrollo</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Los usuarios con más de $15 podrán solicitar retiros próximamente</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Referidos -->
+            <div id="referralsTab" class="tab-content" style="display: none;">
+                <h2><i class="fas fa-gift"></i> Sistema de Referidos</h2>
+                <div id="referralsTable">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Cargando datos de referidos...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular datos de usuarios (en producción, esto vendría de tu API)
+        let usersData = [];
+        let referralsData = [];
+
+        // Mostrar tabs
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            
+            event.target.closest('.tab').classList.add('active');
+            document.getElementById(tab + 'Tab').style.display = 'block';
+            
+            if (tab === 'users' && usersData.length === 0) {
+                loadUsers();
+            } else if (tab === 'referrals' && referralsData.length === 0) {
+                loadReferrals();
+            }
+        }
+
+        // Cargar usuarios (simulado)
+        async function loadUsers() {
+            // En producción, esto llamaría a tu API de Vercel KV
+            const usersTable = document.getElementById('usersTable');
+            
+            // Simulación de carga
+            setTimeout(() => {
+                usersTable.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Usuario</th>
+                                <th>Encuestas</th>
+                                <th>Ganado</th>
+                                <th>Pendiente</th>
+                                <th>Compartidos</th>
+                                <th>Última Actividad</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i class="fas fa-database"></i>
+                                    <p>Conecta a Vercel KV para ver usuarios reales</p>
+                                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                        Los datos aparecerán aquí cuando los usuarios completen encuestas
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+            }, 1000);
+        }
+
+        // Cargar referidos
+        async function loadReferrals() {
+            const referralsTable = document.getElementById('referralsTable');
+            
+            setTimeout(() => {
+                referralsTable.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Usuario</th>
+                                <th>Total Compartidos</th>
+                                <th>WhatsApp</th>
+                                <th>Facebook</th>
+                                <th>Twitter</th>
+                                <th>Telegram</th>
+                                <th>Entradas Sorteo</th>
+                                <th>Última Compartición</th>
+                            </tr>
+                        </thead>
+                        <tbody id="referralsTableBody">
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i class="fas fa-share-alt"></i>
+                                    <p>Los datos de referidos aparecerán aquí cuando los usuarios compartan</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+            }, 1000);
+        }
+
+        // Filtrar usuarios
+        function filterUsers() {
+            const search = document.getElementById('searchUsers').value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(search) ? '' : 'none';
+            });
+        }
+
+        // Exportar usuarios a CSV
+        function exportUsers() {
+            alert('Función de exportación en desarrollo.\nPróximamente podrás exportar todos los datos a CSV.');
+        }
+
+        // Cargar estadísticas globales
+        function loadStats() {
+            // Estas serán reales cuando conectes con tu API
+            document.getElementById('totalUsers').textContent = '0';
+            document.getElementById('totalEarnings').textContent = '$0.00';
+            document.getElementById('pendingPayments').textContent = '0';
+            document.getElementById('totalShares').textContent = '0';
+        }
+
+        // Inicializar
+        loadUsers();
+        loadStats();
+    </script>
+</body>
+</html>

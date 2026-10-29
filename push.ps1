@@ -16,12 +16,13 @@ git add .
 Write-Host "💾 Creando commit: $Message" -ForegroundColor Yellow
 git commit -m $Message
 
-# Push
-Write-Host "⬆️  Subiendo a GitHub..." -ForegroundColor Yellow
+# Push to both branches
+Write-Host "⬆️  Subiendo a GitHub (master y main)..." -ForegroundColor Yellow
 git push origin HEAD:master
+git push origin HEAD:main
 
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "✅ Push exitoso!" -ForegroundColor Green
+    Write-Host "✅ Push exitoso a ambas ramas!" -ForegroundColor Green
 } else {
     Write-Host "❌ Error en el push" -ForegroundColor Red
 }
