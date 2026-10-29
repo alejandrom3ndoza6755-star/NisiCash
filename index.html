@@ -235,10 +235,15 @@
 
 <!-- Progress Dashboard -->
 <section id="progress-dashboard" style="background: var(--white); border-radius: 16px; box-shadow: var(--shadow-lg); max-width: 900px; margin: 2rem auto; padding: 2rem;">
-  <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+  <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
     <i class="fas fa-chart-bar" style="color: var(--primary-color);"></i>
     <span data-i18n="dashboardTitle">My Progress</span>
   </h2>
+  <!-- Browser persistence notice -->
+  <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.6rem;">
+    <i class="fas fa-info-circle" style="color: #d97706; margin-top: 2px; flex-shrink: 0;"></i>
+    <p style="margin: 0; font-size: 0.85rem; color: #92400e;" data-i18n="dashboardNotice">To keep your progress, always access from the same browser and device. Clearing your browser data will reset your history.</p>
+  </div>
   <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
     <div style="flex: 1; min-width: 140px; background: var(--light-bg); border-radius: 12px; padding: 1.25rem; text-align: center;">
       <i class="fas fa-clipboard-check" style="font-size: 1.8rem; color: var(--primary-color); margin-bottom: 0.5rem; display: block;"></i>
