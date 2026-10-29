@@ -14,19 +14,20 @@ export default async function handler(req, res) {
   try {
     const user = await kv.get(`user:${user_id}`);
     if (!user) {
-      // User has no activity yet — return a default empty profile
-      // WITHOUT writing to KV (profile is created on first real postback via record-survey)
+      // User has no activity yet — return default with points
       return res.status(200).json({
         user_id,
         surveys_completed: 0,
-        total_earned: 0,
-        pending_earned: 0,
+        total_earned_points: 0,
+        total_earned_usd: 0,
+        pending_earned_points: 0,
+        pending_earned_usd: 0,
         last_seen: null,
         created_at: null,
         history: []
       });
     }
-    // Existing users: return stored record as-is — no write on poll
+    // Return user data with points
     return res.status(200).json(user);
   } catch (error) {
     console.error('user-stats error:', error);

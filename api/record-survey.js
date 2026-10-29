@@ -4,15 +4,17 @@ const kv = Redis.fromEnv();
 
 const INTERNAL_TOKEN = process.env.INTERNAL_RECORD_TOKEN;
 
+// Sistema de conversión: 200 puntos = $1 USD para el usuario
+// Ratio de comisión: 50% para el usuario, 50% para el sitio
+const POINTS_PER_DOLLAR = 200;
+const USER_COMMISSION = 0.50; // 50% para el usuario
+
 export default async function handler(req, res) {
   // Block CORS preflight — this endpoint is server-to-server only
   if (req.method === 'OPTIONS') return res.status(405).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   // Shared-secret auth: reject requests that don't carry the internal token
-  // Fail-CLOSED: if the env var is not set in production, block all requests
-  // to prevent browsers from writing arbitrary earnings.
-  // (During local `vercel dev`, set INTERNAL_RECORD_TOKEN in .env.local)
   if (!INTERNAL_TOKEN || req.headers['x-internal-token'] !== INTERNAL_TOKEN) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
@@ -28,86 +30,116 @@ export default async function handler(req, res) {
       user = {
         user_id,
         surveys_completed: 0,
-        total_earned: 0,
-        pending_earned: 0,
+        total_earned_points: 0,
+        total_earned_usd: 0,
+        pending_earned_points: 0,
+        pending_earned_usd: 0,
+        site_commission_usd: 0, // Lo que gana el sitio
         last_seen: new Date().toISOString(),
         created_at: new Date().toISOString(),
         history: []
       };
     }
 
-    const amt = parseFloat(amount) || 0;
+    // Convertir el monto USD del offerwall a puntos y aplicar comisión
+    const offerwallAmountUSD = parseFloat(amount) || 0;
+    const userPointsEarned = Math.round(offerwallAmountUSD * POINTS_PER_DOLLAR * USER_COMMISSION);
+    const userUSDEarned = Math.round((userPointsEarned / POINTS_PER_DOLLAR) * 100) / 100;
+    const siteCommissionUSD = Math.round((offerwallAmountUSD - userUSDEarned) * 100) / 100;
 
-    // Find any existing history entry for this tx_id (regardless of status)
+    // Find any existing history entry for this tx_id
     const existingIndex = user.history.findIndex(h => h.tx_id === tx_id);
     const existingEntry = existingIndex !== -1 ? user.history[existingIndex] : null;
 
-    // Exact-replay idempotency: same tx_id + same status already recorded → skip
+    // Exact-replay idempotency
     if (existingEntry && existingEntry.status === status) {
       return res.status(200).json({ success: true, duplicate: true });
     }
 
     if (existingEntry) {
-      // State transition: update the existing entry in place rather than pushing a new one
+      // State transition
       const prevStatus = existingEntry.status;
-      const prevAmount = existingEntry.amount; // snapshot before mutation
+      const prevPoints = existingEntry.points_earned;
+      const prevUserUSD = existingEntry.user_usd_earned;
+      const prevCommission = existingEntry.site_commission_usd;
+      
       existingEntry.status = status;
-      existingEntry.amount = amt;
+      existingEntry.points_earned = userPointsEarned;
+      existingEntry.user_usd_earned = userUSDEarned;
+      existingEntry.offerwall_amount_usd = offerwallAmountUSD;
+      existingEntry.site_commission_usd = siteCommissionUSD;
       existingEntry.date = new Date().toISOString();
 
       if (status === 'completed') {
-        // Use prevAmount for the total_earned credit when transitioning from pending
-        // so that both sides of the pending↔completed move use the same figure,
-        // preventing balance drift when the two postbacks carry different amounts.
-        const creditAmount = (prevStatus === 'pending') ? prevAmount : amt;
-        user.total_earned = Math.round(((user.total_earned || 0) + creditAmount) * 100) / 100;
+        const creditPoints = (prevStatus === 'pending') ? prevPoints : userPointsEarned;
+        const creditUSD = (prevStatus === 'pending') ? prevUserUSD : userUSDEarned;
+        const creditCommission = (prevStatus === 'pending') ? prevCommission : siteCommissionUSD;
+        
+        user.total_earned_points = (user.total_earned_points || 0) + creditPoints;
+        user.total_earned_usd = Math.round(((user.total_earned_usd || 0) + creditUSD) * 100) / 100;
+        user.site_commission_usd = Math.round(((user.site_commission_usd || 0) + creditCommission) * 100) / 100;
+        
         if (prevStatus === 'pending') {
-          user.pending_earned = Math.max(0, Math.round(((user.pending_earned || 0) - prevAmount) * 100) / 100);
+          user.pending_earned_points = Math.max(0, (user.pending_earned_points || 0) - prevPoints);
+          user.pending_earned_usd = Math.max(0, Math.round(((user.pending_earned_usd || 0) - prevUserUSD) * 100) / 100);
         }
-        // Only increment surveys_completed if it wasn't already counted as completed
+        
         if (prevStatus !== 'completed') {
           user.surveys_completed = (user.surveys_completed || 0) + 1;
         }
       } else if (status === 'reversed') {
-        // Undo whatever the previous status contributed
         if (prevStatus === 'completed') {
-          user.total_earned = Math.max(0, Math.round(((user.total_earned || 0) - prevAmount) * 100) / 100);
+          user.total_earned_points = Math.max(0, (user.total_earned_points || 0) - prevPoints);
+          user.total_earned_usd = Math.max(0, Math.round(((user.total_earned_usd || 0) - prevUserUSD) * 100) / 100);
+          user.site_commission_usd = Math.max(0, Math.round(((user.site_commission_usd || 0) - prevCommission) * 100) / 100);
           user.surveys_completed = Math.max(0, (user.surveys_completed || 0) - 1);
         } else if (prevStatus === 'pending') {
-          user.pending_earned = Math.max(0, Math.round(((user.pending_earned || 0) - prevAmount) * 100) / 100);
+          user.pending_earned_points = Math.max(0, (user.pending_earned_points || 0) - prevPoints);
+          user.pending_earned_usd = Math.max(0, Math.round(((user.pending_earned_usd || 0) - prevUserUSD) * 100) / 100);
         }
       }
     } else {
-      // New transaction: push a fresh entry
+      // New transaction
       const entry = {
         date: new Date().toISOString(),
         platform,
-        amount: amt,
+        offerwall_amount_usd: offerwallAmountUSD,
+        points_earned: userPointsEarned,
+        user_usd_earned: userUSDEarned,
+        site_commission_usd: siteCommissionUSD,
         tx_id,
         status
       };
 
       user.history.push(entry);
-      // Keep only last 100
       if (user.history.length > 100) {
         user.history = user.history.slice(user.history.length - 100);
       }
 
       if (status === 'completed') {
         user.surveys_completed = (user.surveys_completed || 0) + 1;
-        user.total_earned = Math.round(((user.total_earned || 0) + amt) * 100) / 100;
+        user.total_earned_points = (user.total_earned_points || 0) + userPointsEarned;
+        user.total_earned_usd = Math.round(((user.total_earned_usd || 0) + userUSDEarned) * 100) / 100;
+        user.site_commission_usd = Math.round(((user.site_commission_usd || 0) + siteCommissionUSD) * 100) / 100;
       } else if (status === 'pending') {
-        user.pending_earned = Math.round(((user.pending_earned || 0) + amt) * 100) / 100;
+        user.pending_earned_points = (user.pending_earned_points || 0) + userPointsEarned;
+        user.pending_earned_usd = Math.round(((user.pending_earned_usd || 0) + userUSDEarned) * 100) / 100;
       } else if (status === 'reversed') {
-        // Arrived reversed with no prior history — subtract from total_earned defensively
-        user.total_earned = Math.max(0, Math.round(((user.total_earned || 0) - amt) * 100) / 100);
+        user.total_earned_points = Math.max(0, (user.total_earned_points || 0) - userPointsEarned);
+        user.total_earned_usd = Math.max(0, Math.round(((user.total_earned_usd || 0) - userUSDEarned) * 100) / 100);
+        user.site_commission_usd = Math.max(0, Math.round(((user.site_commission_usd || 0) - siteCommissionUSD) * 100) / 100);
       }
     }
 
     user.last_seen = new Date().toISOString();
     await kv.set(`user:${user_id}`, user);
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ 
+      success: true,
+      user_points_earned: userPointsEarned,
+      user_usd_earned: userUSDEarned,
+      site_commission: siteCommissionUSD
+    });
   } catch (error) {
     console.error('record-survey error:', error);
     return res.status(500).json({ error: 'Internal server error' });

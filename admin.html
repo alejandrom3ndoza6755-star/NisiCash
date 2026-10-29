@@ -19,6 +19,77 @@
             padding: 2rem;
         }
 
+        /* Login Screen */
+        .login-container {
+            max-width: 400px;
+            margin: 10vh auto;
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .login-container i {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .login-container h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-container p {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .login-form button:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .admin-content {
+            display: none;
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -259,6 +330,36 @@
     </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <i class="fas fa-shield-alt"></i>
+        <h1>Panel de Administración</h1>
+        <p>Acceso Restringido</p>
+        
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i> Token incorrecto
+        </div>
+        
+        <form class="login-form" onsubmit="login(event)">
+            <input 
+                type="password" 
+                id="adminToken" 
+                placeholder="Token de Administrador" 
+                required
+                autocomplete="off"
+            >
+            <button type="submit">
+                <i class="fas fa-sign-in-alt"></i> Acceder
+            </button>
+        </form>
+        
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #95a5a6;">
+            Solo el administrador puede acceder a este panel
+        </p>
+    </div>
+
+    <!-- Admin Content -->
+    <div class="admin-content" id="adminContent">
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-shield-alt"></i> Panel de Administración - NisiCash</h1>
@@ -346,8 +447,45 @@
             </div>
         </div>
     </div>
+    </div>
 
     <script>
+        // Token de admin (debe coincidir con ADMIN_SECRET en Vercel)
+        const ADMIN_TOKEN = 'nisicash_admin_2026';
+        let authToken = null;
+
+        // Login function
+        function login(event) {
+            event.preventDefault();
+            const token = document.getElementById('adminToken').value;
+            
+            if (token === ADMIN_TOKEN) {
+                authToken = token;
+                localStorage.setItem('adminToken', token);
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                loadUsers();
+                loadStats();
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedToken = localStorage.getItem('adminToken');
+            if (savedToken === ADMIN_TOKEN) {
+                authToken = savedToken;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                loadUsers();
+                loadStats();
+            }
+        });
+
         // Simular datos de usuarios (en producción, esto vendría de tu API)
         let usersData = [];
         let referralsData = [];
