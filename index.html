@@ -244,6 +244,21 @@
     <i class="fas fa-info-circle" style="color: #d97706; margin-top: 2px; flex-shrink: 0;"></i>
     <p style="margin: 0; font-size: 0.85rem; color: #92400e;" data-i18n="dashboardNotice">To keep your progress, always access from the same browser and device. Clearing your browser data will reset your history.</p>
   </div>
+  
+  <!-- User ID Card -->
+  <div style="background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <i class="fas fa-id-card" style="font-size: 1.5rem; color: white;"></i>
+      <div>
+        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.9); margin-bottom: 0.25rem;" data-i18n="yourUserId">Your User ID</div>
+        <div style="font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; color: white; letter-spacing: 0.5px;" id="user-id-display">Loading...</div>
+      </div>
+    </div>
+    <button onclick="copyUserId()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+      <i class="fas fa-copy"></i>
+      <span data-i18n="copyId">Copy ID</span>
+    </button>
+  </div>
   <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
     <div style="flex: 1; min-width: 140px; background: var(--light-bg); border-radius: 12px; padding: 1.25rem; text-align: center;">
       <i class="fas fa-clipboard-check" style="font-size: 1.8rem; color: var(--primary-color); margin-bottom: 0.5rem; display: block;"></i>
@@ -569,6 +584,64 @@
                         The winner will be randomly selected at the end of the month. You must have an active account to claim your prize.
                     </p>
                 </div>
+            </div>
+        </div>
+
+        <!-- TOP 3 Leaderboard -->
+        <div class="leaderboard-section" style="margin-top: 3rem;">
+            <div class="leaderboard-header" style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-trophy" style="font-size: 2rem; color: #f59e0b; margin-bottom: 0.5rem;"></i>
+                <h3 style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem;" data-i18n="leaderboardTitle">Top 3 Most Active Sharers</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;" data-i18n="leaderboardSubtitle">Users with the most entries in the raffle this month</p>
+            </div>
+
+            <div class="podium-container" style="display: flex; align-items: flex-end; justify-content: center; gap: 1rem; margin-bottom: 2rem;">
+                <!-- 2nd Place -->
+                <div class="podium-place second" style="flex: 1; max-width: 200px; text-align: center;">
+                    <div style="background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%); border-radius: 12px; padding: 1.5rem 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative;">
+                        <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #94a3b8; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; border: 3px solid white;">2</div>
+                        <i class="fas fa-medal" style="font-size: 2rem; color: #64748b; margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem;" data-i18n="leaderUserId">User ID</div>
+                        <div class="leaderboard-id" id="leader-2-id" style="font-family: 'Courier New', monospace; font-size: 0.85rem; color: #1e293b; font-weight: 600; margin-bottom: 0.75rem;">---</div>
+                        <div style="background: rgba(255,255,255,0.5); border-radius: 8px; padding: 0.5rem;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #1e293b;" id="leader-2-shares">0</div>
+                            <div style="font-size: 0.7rem; color: #64748b;" data-i18n="leaderEntries">entries</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1st Place -->
+                <div class="podium-place first" style="flex: 1; max-width: 220px; text-align: center;">
+                    <div style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 12px; padding: 2rem 1rem; box-shadow: 0 6px 20px rgba(245,158,11,0.4); position: relative; transform: translateY(-10px);">
+                        <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); background: #f59e0b; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; border: 4px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">1</div>
+                        <i class="fas fa-crown" style="font-size: 2.5rem; color: white; margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.9); margin-bottom: 0.25rem;" data-i18n="leaderUserId">User ID</div>
+                        <div class="leaderboard-id" id="leader-1-id" style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: white; font-weight: 700; margin-bottom: 0.75rem;">---</div>
+                        <div style="background: rgba(255,255,255,0.3); border-radius: 8px; padding: 0.5rem;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: white;" id="leader-1-shares">0</div>
+                            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.9);" data-i18n="leaderEntries">entries</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3rd Place -->
+                <div class="podium-place third" style="flex: 1; max-width: 180px; text-align: center;">
+                    <div style="background: linear-gradient(135deg, #e0a481 0%, #cd7f32 100%); border-radius: 12px; padding: 1.25rem 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative;">
+                        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #cd7f32; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; border: 3px solid white;">3</div>
+                        <i class="fas fa-award" style="font-size: 1.8rem; color: #8b4513; margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.7rem; color: #8b4513; margin-bottom: 0.25rem;" data-i18n="leaderUserId">User ID</div>
+                        <div class="leaderboard-id" id="leader-3-id" style="font-family: 'Courier New', monospace; font-size: 0.8rem; color: #1e293b; font-weight: 600; margin-bottom: 0.75rem;">---</div>
+                        <div style="background: rgba(255,255,255,0.4); border-radius: 8px; padding: 0.5rem;">
+                            <div style="font-size: 1.3rem; font-weight: 700; color: #1e293b;" id="leader-3-shares">0</div>
+                            <div style="font-size: 0.65rem; color: #8b4513;" data-i18n="leaderEntries">entries</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 1rem; background: var(--light-bg); border-radius: 10px;">
+                <i class="fas fa-fire" style="color: #ef4444; margin-right: 0.5rem;"></i>
+                <span style="color: var(--text-secondary); font-size: 0.9rem;" data-i18n="leaderboardMotivation">Keep sharing to climb the leaderboard and increase your chances!</span>
             </div>
         </div>
     </div>

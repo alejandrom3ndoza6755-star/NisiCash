@@ -150,7 +150,16 @@ const translations = {
         days: 'days',
         hours: 'hours',
         minutes: 'min',
-        raffleRules: 'The winner will be randomly selected at the end of the month. You must have an active account to claim your prize.'
+        raffleRules: 'The winner will be randomly selected at the end of the month. You must have an active account to claim your prize.',
+        // User ID & Leaderboard
+        yourUserId: 'Your User ID',
+        copyId: 'Copy ID',
+        userIdCopied: 'User ID copied!',
+        leaderboardTitle: 'Top 3 Most Active Sharers',
+        leaderboardSubtitle: 'Users with the most entries in the raffle this month',
+        leaderUserId: 'User ID',
+        leaderEntries: 'entries',
+        leaderboardMotivation: 'Keep sharing to climb the leaderboard and increase your chances!'
     },
     es: {
         pageTitle: 'Gana Dinero Hoy | NisiCash',
@@ -300,7 +309,16 @@ const translations = {
         days: 'días',
         hours: 'horas',
         minutes: 'min',
-        raffleRules: 'El ganador será seleccionado aleatoriamente al final del mes. Debes tener una cuenta activa para reclamar tu premio.'
+        raffleRules: 'El ganador será seleccionado aleatoriamente al final del mes. Debes tener una cuenta activa para reclamar tu premio.',
+        // User ID & Leaderboard
+        yourUserId: 'Tu ID de Usuario',
+        copyId: 'Copiar ID',
+        userIdCopied: '¡ID de usuario copiado!',
+        leaderboardTitle: 'Top 3 Más Activos',
+        leaderboardSubtitle: 'Usuarios con más entradas al sorteo este mes',
+        leaderUserId: 'ID de Usuario',
+        leaderEntries: 'entradas',
+        leaderboardMotivation: '¡Sigue compartiendo para escalar en el ranking y aumentar tus chances!'
     }
 };
 
@@ -878,6 +896,15 @@ function renderTransactions(history) {
 async function loadDashboardData() {
     const userId = getUserId();
     const container = document.getElementById('transactions-list');
+    
+    // Mostrar el User ID
+    const userIdDisplay = document.getElementById('user-id-display');
+    if (userIdDisplay) {
+        // Mostrar solo los primeros 8 caracteres del ID para que sea más legible
+        userIdDisplay.textContent = userId.substring(0, 8).toUpperCase() + '...';
+        userIdDisplay.title = userId; // Mostrar el ID completo en el tooltip
+    }
+    
     try {
         const res = await fetch(`${VERCEL_BASE_URL}/api/user-stats?user_id=${encodeURIComponent(userId)}`);
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -919,6 +946,10 @@ async function loadDashboardData() {
 function initProgressDashboard() {
     loadDashboardData();
     setInterval(loadDashboardData, 30000);
+    
+    // Cargar leaderboard
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 60000); // Actualizar cada minuto
 }
 
 // ============================================
@@ -1386,6 +1417,75 @@ async function recordShare(platform) {
     }
   } catch (error) {
     console.error('Error recording share:', error);
+  }
+}
+
+// Copy User ID
+function copyUserId() {
+  const userId = getUserId();
+  
+  // Crear elemento temporal para copiar
+  const tempInput = document.createElement('input');
+  tempInput.value = userId;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  tempInput.setSelectionRange(0, 99999);
+  
+  try {
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    
+    // Mostrar feedback
+    const btn = event.target.closest('button');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> <span>' + t('userIdCopied') + '</span>';
+    btn.style.background = 'rgba(16, 185, 129, 0.3)';
+    
+    setTimeout(() => {
+      btn.innerHTML = originalHTML;
+      btn.style.background = 'rgba(255,255,255,0.2)';
+    }, 2000);
+  } catch (err) {
+    console.error('Failed to copy user ID:', err);
+    document.body.removeChild(tempInput);
+    alert('Failed to copy. Please copy manually: ' + userId);
+  }
+}
+
+// Load Top 3 Leaderboard
+async function loadLeaderboard() {
+  try {
+    const res = await fetch(`${VERCEL_BASE_URL}/api/get-top-sharers`);
+    if (!res.ok) throw new Error('Failed to load leaderboard');
+    
+    const data = await res.json();
+    const topSharers = data.topSharers || [];
+    
+    // Actualizar los elementos del podio
+    for (let i = 0; i < 3; i++) {
+      const position = i + 1;
+      const idElement = document.getElementById(`leader-${position}-id`);
+      const sharesElement = document.getElementById(`leader-${position}-shares`);
+      
+      if (topSharers[i]) {
+        const user = topSharers[i];
+        // Mostrar solo los primeros 8 caracteres del ID
+        if (idElement) {
+          idElement.textContent = user.user_id.substring(0, 8).toUpperCase() + '...';
+          idElement.title = user.user_id; // Tooltip con ID completo
+        }
+        if (sharesElement) {
+          sharesElement.textContent = user.total_shares;
+        }
+      } else {
+        // Si no hay usuario en esa posición
+        if (idElement) idElement.textContent = '---';
+        if (sharesElement) sharesElement.textContent = '0';
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to load leaderboard:', err);
+    // Dejar valores por defecto si falla
   }
 }
 
