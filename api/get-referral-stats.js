@@ -26,8 +26,13 @@ export default async function handler(req, res) {
     // Get user's referral data
     const referralData = await kv.get(`referral:${user_id}`);
     
-    // Get total participants
-    const totalParticipants = (await kv.get('raffle:total_participants')) || 0;
+    // Get total participants from DB
+    const realParticipants = (await kv.get('raffle:total_participants')) || 0;
+    
+    // Base seed de participantes para mostrar actividad inicial (~1,500)
+    // Se suma a los participantes reales para dar un total consistente
+    const SEED_PARTICIPANTS = 1500;
+    const totalParticipants = realParticipants + SEED_PARTICIPANTS;
 
     // Get raffle end date (last day of current month)
     const now = new Date();
@@ -42,6 +47,7 @@ export default async function handler(req, res) {
 
     const globalStats = {
       total_participants: totalParticipants,
+      real_participants: realParticipants,  // Para debugging interno
       raffle_end_date: raffleEndDate.toISOString()
     };
 

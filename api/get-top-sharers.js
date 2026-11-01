@@ -4,23 +4,23 @@
 import { kv } from '@vercel/kv';
 
 // Datos "seed" ficticios para cuando no hay usuarios reales
-// Se muestran solo si no hay suficientes usuarios reales
+// Ajustados para parecer consistentes con ~1,500 participantes
 const SEED_DATA = [
   {
     user_id: 'demo-user-alpha-001',
-    total_shares: 47,
+    total_shares: 127,
     display_name: 'A7B2C4D9',
     is_seed: true
   },
   {
     user_id: 'demo-user-beta-002',
-    total_shares: 38,
+    total_shares: 103,
     display_name: 'E3F8G1H6',
     is_seed: true
   },
   {
     user_id: 'demo-user-gamma-003',
-    total_shares: 29,
+    total_shares: 89,
     display_name: 'J9K4L2M7',
     is_seed: true
   }

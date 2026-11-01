@@ -1062,10 +1062,9 @@ function initLiveCounter() {
     const counterElement = document.getElementById('liveCounter');
     if (!counterElement) return;
 
-    // Número base más realista al inicio (entre 12-50 usuarios)
-    // A medida que crece, este número puede aumentar manualmente
-    const MIN_USERS = 12;
-    const MAX_USERS = 50;
+    // Rango establecido para parecer plataforma activa
+    const MIN_USERS = 500;
+    const MAX_USERS = 600;
     
     const baseNumber = Math.floor(Math.random() * (MAX_USERS - MIN_USERS + 1)) + MIN_USERS;
     
@@ -1077,17 +1076,17 @@ function initLiveCounter() {
         sessionStorage.setItem('liveUserCount', currentCount);
     } else {
         currentCount = parseInt(currentCount);
-        // Pequeña variación si ya existe (mantener en rango realista)
-        currentCount = Math.max(MIN_USERS, Math.min(MAX_USERS, currentCount + Math.floor(Math.random() * 7) - 3));
+        // Pequeña variación si ya existe (mantener en rango)
+        currentCount = Math.max(MIN_USERS, Math.min(MAX_USERS, currentCount + Math.floor(Math.random() * 11) - 5));
         sessionStorage.setItem('liveUserCount', currentCount);
     }
     
     // Mostrar número inicial con animación
     animateCounterValue(counterElement, 0, currentCount, 2000);
     
-    // Actualizar contador cada 8-20 segundos con variación aleatoria
+    // Actualizar contador cada 5-15 segundos con variación aleatoria
     setInterval(() => {
-        const change = Math.floor(Math.random() * 5) - 2; // -2 a +2 (cambios más sutiles)
+        const change = Math.floor(Math.random() * 10) - 4; // -4 a +5 (cambios visibles)
         const newCount = Math.max(MIN_USERS, Math.min(MAX_USERS, currentCount + change));
         
         if (newCount !== currentCount) {
@@ -1095,10 +1094,9 @@ function initLiveCounter() {
             currentCount = newCount;
             sessionStorage.setItem('liveUserCount', currentCount);
         }
-    }, Math.random() * 12000 + 8000); // Entre 8 y 20 segundos
+    }, Math.random() * 10000 + 5000); // Entre 5 y 15 segundos
     
-    // Nota: Para escalar cuando tengas más usuarios, cambia MIN_USERS/MAX_USERS
-    // Por ejemplo: 50-150 (pequeño), 150-500 (mediano), 500-1000 (grande)
+    // NOTA: Cuando tengas usuarios reales, avisar para ajustar estos números
 }
 
 // Función auxiliar para animar el contador
