@@ -1062,8 +1062,12 @@ function initLiveCounter() {
     const counterElement = document.getElementById('liveCounter');
     if (!counterElement) return;
 
-    // Generar número base aleatorio entre 800-950 en cada carga
-    const baseNumber = Math.floor(Math.random() * (950 - 800 + 1)) + 800;
+    // Número base más realista al inicio (entre 12-50 usuarios)
+    // A medida que crece, este número puede aumentar manualmente
+    const MIN_USERS = 12;
+    const MAX_USERS = 50;
+    
+    const baseNumber = Math.floor(Math.random() * (MAX_USERS - MIN_USERS + 1)) + MIN_USERS;
     
     // Usar sessionStorage para mantener durante la sesión pero cambiar en nueva pestaña
     let currentCount = sessionStorage.getItem('liveUserCount');
@@ -1073,25 +1077,28 @@ function initLiveCounter() {
         sessionStorage.setItem('liveUserCount', currentCount);
     } else {
         currentCount = parseInt(currentCount);
-        // Pequeña variación si ya existe
-        currentCount = Math.max(800, Math.min(950, currentCount + Math.floor(Math.random() * 21) - 10));
+        // Pequeña variación si ya existe (mantener en rango realista)
+        currentCount = Math.max(MIN_USERS, Math.min(MAX_USERS, currentCount + Math.floor(Math.random() * 7) - 3));
         sessionStorage.setItem('liveUserCount', currentCount);
     }
     
     // Mostrar número inicial con animación
     animateCounterValue(counterElement, 0, currentCount, 2000);
     
-    // Actualizar contador cada 5-15 segundos con variación aleatoria
+    // Actualizar contador cada 8-20 segundos con variación aleatoria
     setInterval(() => {
-        const change = Math.floor(Math.random() * 10) - 3; // -3 a +6
-        const newCount = Math.max(800, Math.min(950, currentCount + change));
+        const change = Math.floor(Math.random() * 5) - 2; // -2 a +2 (cambios más sutiles)
+        const newCount = Math.max(MIN_USERS, Math.min(MAX_USERS, currentCount + change));
         
         if (newCount !== currentCount) {
             animateCounterValue(counterElement, currentCount, newCount, 800);
             currentCount = newCount;
             sessionStorage.setItem('liveUserCount', currentCount);
         }
-    }, Math.random() * 10000 + 5000); // Entre 5 y 15 segundos
+    }, Math.random() * 12000 + 8000); // Entre 8 y 20 segundos
+    
+    // Nota: Para escalar cuando tengas más usuarios, cambia MIN_USERS/MAX_USERS
+    // Por ejemplo: 50-150 (pequeño), 150-500 (mediano), 500-1000 (grande)
 }
 
 // Función auxiliar para animar el contador
@@ -1469,11 +1476,20 @@ async function loadLeaderboard() {
       
       if (topSharers[i]) {
         const user = topSharers[i];
-        // Mostrar solo los primeros 8 caracteres del ID
+        
+        // Si es un usuario seed, mostrar el display_name; si es real, mostrar el ID abreviado
         if (idElement) {
-          idElement.textContent = user.user_id.substring(0, 8).toUpperCase() + '...';
-          idElement.title = user.user_id; // Tooltip con ID completo
+          if (user.is_seed && user.display_name) {
+            // Usuario ficticio - mostrar nombre de display directo
+            idElement.textContent = user.display_name;
+            idElement.title = 'Demo participant'; // Tooltip genérico
+          } else {
+            // Usuario real - mostrar los primeros 8 caracteres del ID
+            idElement.textContent = user.user_id.substring(0, 8).toUpperCase() + '...';
+            idElement.title = user.user_id; // Tooltip con ID completo
+          }
         }
+        
         if (sharesElement) {
           sharesElement.textContent = user.total_shares;
         }
@@ -1483,9 +1499,29 @@ async function loadLeaderboard() {
         if (sharesElement) sharesElement.textContent = '0';
       }
     }
+    
+    // Log para debugging (puedes quitar esto en producción)
+    if (data.has_seed_data) {
+      console.log(`Leaderboard: Showing ${data.total_real_users} real users + seed data`);
+    }
+    
   } catch (err) {
     console.warn('Failed to load leaderboard:', err);
-    // Dejar valores por defecto si falla
+    // Si falla completamente, mostrar datos seed locales como fallback
+    const fallbackData = [
+      { display_name: 'A7B2C4D9', total_shares: 47, is_seed: true },
+      { display_name: 'E3F8G1H6', total_shares: 38, is_seed: true },
+      { display_name: 'J9K4L2M7', total_shares: 29, is_seed: true }
+    ];
+    
+    for (let i = 0; i < 3; i++) {
+      const position = i + 1;
+      const idElement = document.getElementById(`leader-${position}-id`);
+      const sharesElement = document.getElementById(`leader-${position}-shares`);
+      
+      if (idElement) idElement.textContent = fallbackData[i].display_name;
+      if (sharesElement) sharesElement.textContent = fallbackData[i].total_shares;
+    }
   }
 }
 

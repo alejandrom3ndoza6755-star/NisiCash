@@ -3,6 +3,29 @@
 
 import { kv } from '@vercel/kv';
 
+// Datos "seed" ficticios para cuando no hay usuarios reales
+// Se muestran solo si no hay suficientes usuarios reales
+const SEED_DATA = [
+  {
+    user_id: 'demo-user-alpha-001',
+    total_shares: 47,
+    display_name: 'A7B2C4D9',
+    is_seed: true
+  },
+  {
+    user_id: 'demo-user-beta-002',
+    total_shares: 38,
+    display_name: 'E3F8G1H6',
+    is_seed: true
+  },
+  {
+    user_id: 'demo-user-gamma-003',
+    total_shares: 29,
+    display_name: 'J9K4L2M7',
+    is_seed: true
+  }
+];
+
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -19,50 +42,79 @@ export default async function handler(req, res) {
 
   try {
     // Obtener todos los usuarios con sus estadísticas de referidos
-    const allKeys = await kv.keys('user:*:referrals');
+    // CORREGIDO: Buscar con el key correcto "referral:*"
+    const allKeys = await kv.keys('referral:*');
     
-    if (!allKeys || allKeys.length === 0) {
-      return res.status(200).json({ topSharers: [] });
-    }
-
-    // Obtener los datos de cada usuario
-    const usersData = [];
+    // Filtrar solo los keys de usuarios (no el contador total_participants)
+    const userKeys = allKeys?.filter(key => !key.includes('raffle:')) || [];
     
-    for (const key of allKeys) {
+    // Obtener los datos de cada usuario REAL
+    const realUsersData = [];
+    
+    for (const key of userKeys) {
       const referralData = await kv.get(key);
       
       if (referralData && referralData.total_shares > 0) {
-        // Extraer user_id del key (formato: user:UUID:referrals)
-        const userId = key.split(':')[1];
-        
-        usersData.push({
-          user_id: userId,
+        realUsersData.push({
+          user_id: referralData.user_id,
           total_shares: referralData.total_shares || 0,
-          whatsapp_shares: referralData.whatsapp_shares || 0,
-          facebook_shares: referralData.facebook_shares || 0,
-          twitter_shares: referralData.twitter_shares || 0,
-          telegram_shares: referralData.telegram_shares || 0,
-          copy_shares: referralData.copy_shares || 0,
-          last_share_date: referralData.last_share_date || null
+          shares_by_platform: referralData.shares_by_platform || {},
+          last_share: referralData.last_share || null,
+          is_seed: false
         });
       }
     }
 
-    // Ordenar por total_shares descendente y tomar los top 3
-    usersData.sort((a, b) => b.total_shares - a.total_shares);
-    const top3 = usersData.slice(0, 3);
+    // Ordenar usuarios reales por total_shares descendente
+    realUsersData.sort((a, b) => b.total_shares - a.total_shares);
+
+    let topSharers = [];
+
+    // Si hay menos de 3 usuarios reales, completar con datos seed
+    if (realUsersData.length < 3) {
+      // Tomar los usuarios reales que hay
+      topSharers = [...realUsersData];
+      
+      // Calcular cuántos seed necesitamos
+      const seedNeeded = 3 - realUsersData.length;
+      
+      // Agregar seed data SOLO en las posiciones faltantes
+      for (let i = 0; i < seedNeeded; i++) {
+        // Asegurarse de que el seed tenga menos shares que el último usuario real
+        let seedUser = { ...SEED_DATA[i] };
+        
+        if (realUsersData.length > 0) {
+          const lowestRealShares = realUsersData[realUsersData.length - 1].total_shares;
+          // El seed debe tener menos shares que el usuario real más bajo
+          seedUser.total_shares = Math.max(1, lowestRealShares - (i + 1) * 3);
+        }
+        
+        topSharers.push(seedUser);
+      }
+    } else {
+      // Si hay 3 o más usuarios reales, mostrar solo usuarios reales
+      topSharers = realUsersData.slice(0, 3);
+    }
 
     return res.status(200).json({
       success: true,
-      topSharers: top3,
+      topSharers: topSharers,
+      total_real_users: realUsersData.length,
+      has_seed_data: topSharers.some(u => u.is_seed),
       timestamp: new Date().toISOString()
     });
 
   } catch (error) {
     console.error('Error getting top sharers:', error);
-    return res.status(500).json({ 
-      error: 'Internal server error',
-      message: error.message 
+    
+    // En caso de error, devolver datos seed para que no se vea vacío
+    return res.status(200).json({ 
+      success: true,
+      topSharers: SEED_DATA,
+      total_real_users: 0,
+      has_seed_data: true,
+      error_fallback: true,
+      timestamp: new Date().toISOString()
     });
   }
 }
